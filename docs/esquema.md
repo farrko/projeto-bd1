@@ -121,6 +121,17 @@ Estas regras ficam em gatilhos, na camada de serviço ou em ambos:
 8. Um aluno só pode ser atribuído a uma avaliação com turma se estiver matriculado na mesma, garantido por um gatilho `BEFORE INSERT OR UPDATE OF assessment_id, student_id` em `assignment`. Provas extras para alunos específicos são criadas como avaliações sem turma.
 9. Um gatilho `BEFORE DELETE OR UPDATE OF student_id, class_group_id` em `class_enrollment` rejeita a exclusão ou a troca de chave de uma matrícula cujo aluno já tenha `assignment` em alguma avaliação daquela turma.
 10. Um gatilho `BEFORE UPDATE OF points` em `assessment_item` rejeita a alteração de `points` quando já existe alguma `answer` para aquele item.
+11. Um gatilho `BEFORE UPDATE OF is_correct` em `alternative` rejeita a troca da alternativa correta quando já existe alguma `answer` para a questão, em qualquer avaliação em que ela tenha sido usada.
+12. Um gatilho `BEFORE INSERT OR UPDATE OF status, started_at, submitted_at` em `assignment` define estas regras:
+  - Toda atribuição nasce `ASSIGNED`, sem `started_at` nem `submitted_at`.
+  - O status só avança um passo por vez: `ASSIGNED`, `IN_PROGRESS`, `SUBMITTED`, `GRADED`. Não há retrocesso nem salto.
+  - `started_at` e `submitted_at` são preenchidos, se ainda nulos, na transição correspondente e não mudam fora dela.
+  - A passagem para `GRADED` exige que nenhuma `answer` da atribuição esteja com `score` nulo.
+13. Um gatilho `BEFORE INSERT OR UPDATE OR DELETE` em `answer` define estas regras:
+  - O conteúdo da resposta (`chosen_letter`, `answer_text`) só pode ser criado, alterado ou removido enquanto a atribuição está `IN_PROGRESS`.
+  - A nota de uma questão de texto livre só pode ser dada ou alterada enquanto a atribuição está `SUBMITTED`, e não pode ser informada na criação da resposta.
+  - A nota das questões objetivas é calculada pelo banco e não passa por esta verificação.
+  - Depois de `GRADED`, nem o conteúdo nem as notas podem ser alterados.
 
 ## Justificativa da 3FN
 
