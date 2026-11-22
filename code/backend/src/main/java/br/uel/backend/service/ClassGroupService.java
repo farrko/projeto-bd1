@@ -53,4 +53,8 @@ public class ClassGroupService {
 
     return students;
   }
+
+  public ClassGroup saveClassGroup(ClassGroup classGroup) {
+    return classGroupDao.save(classGroup);
+  }
 }
