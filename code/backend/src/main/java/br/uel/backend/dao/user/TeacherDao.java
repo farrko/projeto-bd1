@@ -1,5 +1,6 @@
 package br.uel.backend.dao.user;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,6 +39,17 @@ public class TeacherDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  public List<Teacher> findAll() {
+    String sql =
+      """
+      SELECT u.id, u.name, u.email, u.password, u.role, t.staff_number
+      FROM user_account u
+      JOIN teacher t ON t.user_id = u.id
+      """;
+
+    return jdbc.query(sql, rowMapper);
   }
 
   @Transactional

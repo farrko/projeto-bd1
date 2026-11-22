@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.UserAccount;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +36,16 @@ public class UserAccountDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  public List<UserAccount> findAll() {
+    String sql =
+      """
+      SELECT id, name, email, password, role
+      FROM user_account
+      """;
+
+    return jdbc.query(sql, rowMapper);
   }
 
   public UserAccount save(UserAccount userAccount) {
