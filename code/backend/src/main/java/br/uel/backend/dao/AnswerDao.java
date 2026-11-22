@@ -50,6 +50,72 @@ public class AnswerDao {
     return jdbc.query(sql, rowMapper);
   }
 
+  public List<Answer> findAllWithAssessment(UUID assessmentId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      WHERE assessment_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, assessmentId);
+  }
+
+  public List<Answer> findAllWithStudent(UUID studentId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      WHERE student_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, studentId);
+  }
+
+  public List<Answer> findAllWithQuestion(UUID questionId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      WHERE question_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, questionId);
+  }
+
+  public List<Answer> findAllWithAssessmentAndStudent(UUID assessmentId, UUID studentId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      WHERE assessment_id = ? AND student_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, assessmentId, studentId);
+  }
+
+  public List<Answer> findAllWithAssessmentAndQuestion(UUID assessmentId, UUID questionId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      WHERE assessment_id = ? AND question_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, assessmentId, questionId);
+  }
+
+  public List<Answer> findAllWithStudentAndQuestion(UUID studentId, UUID questionId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      WHERE student_id = ? AND question_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, studentId, questionId);
+  }
+
   public Answer save(Answer answer) {
     String sql =
       """
