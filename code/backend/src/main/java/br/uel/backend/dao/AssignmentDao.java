@@ -49,6 +49,17 @@ public class AssignmentDao {
     return jdbc.query(sql, rowMapper);
   }
 
+  public List<Assignment> findAllWithAssessment(UUID assessmentId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, status, started_at, submitted_at
+      FROM assignment
+      WHERE assessment_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, assessmentId);
+  }
+
   public Assignment save(Assignment assignment) {
     String sql =
       """
