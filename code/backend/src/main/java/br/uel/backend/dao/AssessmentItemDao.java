@@ -47,6 +47,18 @@ public class AssessmentItemDao {
     return jdbc.query(sql, rowMapper);
   }
 
+  public List<AssessmentItem> findAllInAssessment(UUID assessmentId) {
+    String sql =
+      """
+      SELECT assessment_id, question_id, points, position
+      FROM assessment_item
+      WHERE assessment_id = ?
+      ORDER BY position
+      """;
+
+    return jdbc.query(sql, rowMapper, assessmentId);
+  }
+
   public AssessmentItem save(AssessmentItem assessmentItem) {
     String sql =
       """
