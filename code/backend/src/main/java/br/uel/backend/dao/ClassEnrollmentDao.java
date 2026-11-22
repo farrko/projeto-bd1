@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.ClassEnrollment;
+import br.uel.backend.model.ClassGroup;
 import lombok.AllArgsConstructor;
 
 @Repository
@@ -43,6 +44,28 @@ public class ClassEnrollmentDao {
       """;
 
     return jdbc.query(sql, rowMapper);
+  }
+
+  public List<ClassEnrollment> findAllInClassGroup(UUID classGroupId) {
+    String sql =
+      """
+      SELECT student_id, class_group_id
+      FROM class_enrollment
+      WHERE class_group_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, classGroupId);
+  }
+
+  public List<ClassEnrollment> findAllInClassGroup(ClassGroup classGroup) {
+    String sql =
+      """
+      SELECT student_id, class_group_id
+      FROM class_enrollment
+      WHERE class_group_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, classGroup.getId());
   }
 
   public ClassEnrollment save(ClassEnrollment classEnrollment) {
