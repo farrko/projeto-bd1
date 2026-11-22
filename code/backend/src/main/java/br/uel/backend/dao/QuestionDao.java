@@ -1,6 +1,7 @@
 package br.uel.backend.dao;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,6 +37,16 @@ public class QuestionDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  public List<Question> findAll() {
+    String sql =
+      """
+      SELECT id, statement, type, created_at, teacher_id
+      FROM question
+      """;
+
+    return jdbc.query(sql, rowMapper);
   }
 
   public Question save(Question question) {

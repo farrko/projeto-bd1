@@ -1,6 +1,7 @@
 package br.uel.backend.dao.question;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -39,6 +40,17 @@ public class FreeTextQuestionDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  public List<FreeTextQuestion> findAll() {
+    String sql =
+      """
+      SELECT q.id, q.statement, q.type, q.created_at, q.teacher_id, f.expected_answer
+      FROM question q
+      JOIN free_text_question f ON f.question_id = q.id
+      """;
+
+    return jdbc.query(sql, rowMapper);
   }
 
   @Transactional

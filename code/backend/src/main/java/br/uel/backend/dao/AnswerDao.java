@@ -1,5 +1,6 @@
 package br.uel.backend.dao;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,6 +38,16 @@ public class AnswerDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  public List<Answer> findAll() {
+    String sql =
+      """
+      SELECT assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      FROM answer
+      """;
+
+    return jdbc.query(sql, rowMapper);
   }
 
   public Answer save(Answer answer) {

@@ -1,5 +1,6 @@
 package br.uel.backend.dao;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,6 +35,16 @@ public class ClassGroupDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  public List<ClassGroup> findAll() {
+    String sql =
+      """
+      SELECT id, name, year, semester
+      FROM class_group
+      """;
+
+    return jdbc.query(sql, rowMapper);
   }
 
   public ClassGroup save(ClassGroup classGroup) {
