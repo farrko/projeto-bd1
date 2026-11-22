@@ -37,6 +37,18 @@ public class AlternativeDao {
     }
   }
 
+  public List<Alternative> findAllFromQuestion(UUID questionId) {
+    String sql =
+      """
+      SELECT question_id, letter, text, is_correct
+      FROM alternative
+      WHERE question_id = ?
+      ORDER BY letter
+      """;
+
+    return jdbc.query(sql, rowMapper, questionId);
+  }
+
   public List<Alternative> findAll() {
     String sql =
       """
