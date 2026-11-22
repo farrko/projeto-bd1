@@ -1,5 +1,6 @@
 package br.uel.backend.model.question;
 
+import br.uel.backend.error.FieldValidationException;
 import br.uel.backend.model.Question;
 import lombok.*;
 
@@ -9,4 +10,8 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class FreeTextQuestion extends Question {
   private String expectedAnswer;
+
+  public void validateExpectedAnswer() {
+    // nullable field, no constraints besides being optional
+  }
 }
