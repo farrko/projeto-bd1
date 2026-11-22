@@ -25,8 +25,16 @@ public class QuestionService {
     return multipleChoiceQuestionDao.findById(id);
   }
 
+  public List<MultipleChoiceQuestion> getAllMultipleChoiceQuestions() {
+    return multipleChoiceQuestionDao.findAll();
+  }
+
   public Optional<FreeTextQuestion> getFreeTextQuestionById(UUID id) {
     return freeTextQuestionDao.findById(id);
+  }
+
+  public List<FreeTextQuestion> getAllFreeTextQuestions() {
+    return freeTextQuestionDao.findAll();
   }
 
   public List<Alternative> getAlternativesFromQuestion(MultipleChoiceQuestion question) {
