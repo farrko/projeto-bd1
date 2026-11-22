@@ -33,7 +33,7 @@ public class AssessmentService {
   }
 
   public Teacher getAssessmentTeacher(Assessment assessment) {
-    return teacherDao.findTeacherById(assessment.getTeacherId()).get();
+    return teacherDao.findById(assessment.getTeacherId()).get();
   }
 
   public ClassGroup getAssessmentClassGroup(Assessment assessment) {

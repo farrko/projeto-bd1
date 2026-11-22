@@ -17,7 +17,7 @@ public class UserService {
   private TeacherDao teacherDao;
 
   public Optional<Student> getStudentById(UUID id) {
-    return studentDao.findStudentById(id);
+    return studentDao.findById(id);
   }
 
   public List<Student> getAllStudents() {
@@ -29,7 +29,7 @@ public class UserService {
   }
 
   public Optional<Teacher> getTeacherById(UUID id) {
-    return teacherDao.findTeacherById(id);
+    return teacherDao.findById(id);
   }
 
   public List<Teacher> getAllTeachers() {

@@ -25,7 +25,7 @@ public class TeacherDao {
     .staffNumber(rs.getString("staff_number"))
     .build();
 
-  public Optional<Teacher> findTeacherById(UUID userId) {
+  public Optional<Teacher> findById(UUID userId) {
     String sql =
       """
       SELECT u.id, u.name, u.email, u.password, u.role, t.staff_number

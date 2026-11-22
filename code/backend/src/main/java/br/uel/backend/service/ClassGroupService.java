@@ -36,7 +36,7 @@ public class ClassGroupService {
     List<Student> students = new ArrayList<>();
     for (ClassEnrollment enrollment : enrollments) {
       UUID studentId = enrollment.getStudentId();
-      students.add(studentDao.findStudentById(studentId).get());
+      students.add(studentDao.findById(studentId).get());
     }
 
     return students;
@@ -48,7 +48,7 @@ public class ClassGroupService {
     List<Student> students = new ArrayList<>();
     for (ClassEnrollment enrollment : enrollments) {
       UUID studentId = enrollment.getStudentId();
-      students.add(studentDao.findStudentById(studentId).get());
+      students.add(studentDao.findById(studentId).get());
     }
 
     return students;

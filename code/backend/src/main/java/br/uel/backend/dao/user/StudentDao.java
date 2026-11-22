@@ -25,7 +25,7 @@ public class StudentDao {
     .enrollmentNumber(rs.getString("enrollment_number"))
     .build();
 
-  public Optional<Student> findStudentById(UUID userId) {
+  public Optional<Student> findById(UUID userId) {
     String sql =
       """
       SELECT u.id, u.name, u.email, u.password, u.role, s.enrollment_number
