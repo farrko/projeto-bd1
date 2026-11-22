@@ -35,4 +35,43 @@ public class ClassGroupDao {
       return Optional.empty();
     }
   }
+
+  public ClassGroup save(ClassGroup classGroup) {
+    if (classGroup.getId() == null) {
+      String sql =
+        """
+        INSERT INTO class_group (name, year, semester)
+        VALUES (?, ?, ?)
+        RETURNING id, name, year, semester
+        """;
+
+      return jdbc.queryForObject(
+        sql,
+        rowMapper,
+        classGroup.getName(),
+        classGroup.getYear(),
+        classGroup.getSemester()
+      );
+    }
+
+    String sql =
+      """
+      INSERT INTO class_group (id, name, year, semester)
+      VALUES (?, ?, ?, ?)
+      ON CONFLICT (id) DO UPDATE SET
+        name = EXCLUDED.name,
+        year = EXCLUDED.year,
+        semester = EXCLUDED.semester
+      RETURNING id, name, year, semester
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      classGroup.getId(),
+      classGroup.getName(),
+      classGroup.getYear(),
+      classGroup.getSemester()
+    );
+  }
 }

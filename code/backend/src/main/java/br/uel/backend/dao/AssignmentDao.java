@@ -37,4 +37,45 @@ public class AssignmentDao {
       return Optional.empty();
     }
   }
+
+  public Assignment save(Assignment assignment) {
+    String sql =
+      """
+      INSERT INTO assignment (assessment_id, student_id, status, started_at, submitted_at)
+      VALUES (?, ?, COALESCE(?, 'ASSIGNED'), ?, ?)
+      RETURNING assessment_id, student_id, status, started_at, submitted_at
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      assignment.getAssessmentId(),
+      assignment.getStudentId(),
+      assignment.getStatus(),
+      assignment.getStartedAt(),
+      assignment.getSubmittedAt()
+    );
+  }
+
+  public Assignment update(Assignment assignment) {
+    String sql =
+      """
+      UPDATE assignment
+      SET status = ?,
+          started_at = ?,
+          submitted_at = ?
+      WHERE assessment_id = ? AND student_id = ?
+      RETURNING assessment_id, student_id, status, started_at, submitted_at
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      assignment.getStatus(),
+      assignment.getStartedAt(),
+      assignment.getSubmittedAt(),
+      assignment.getAssessmentId(),
+      assignment.getStudentId()
+    );
+  }
 }

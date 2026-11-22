@@ -33,4 +33,16 @@ public class ClassEnrollmentDao {
       return Optional.empty();
     }
   }
+
+  public ClassEnrollment save(ClassEnrollment classEnrollment) {
+    String sql =
+      """
+      INSERT INTO class_enrollment (student_id, class_group_id)
+      VALUES (?, ?)
+      ON CONFLICT (student_id, class_group_id) DO NOTHING
+      """;
+
+    jdbc.update(sql, classEnrollment.getStudentId(), classEnrollment.getClassGroupId());
+    return classEnrollment;
+  }
 }

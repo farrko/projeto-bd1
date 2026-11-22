@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import br.uel.backend.model.user.Teacher;
 import lombok.AllArgsConstructor;
 
@@ -37,5 +38,61 @@ public class TeacherDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  @Transactional
+  public Teacher save(Teacher teacher) {
+    UUID id;
+    if (teacher.getId() == null) {
+      String userSql =
+        """
+        INSERT INTO user_account (name, email, password, role)
+        VALUES (?, ?, ?, 'TEACHER')
+        RETURNING id
+        """;
+
+      id = jdbc.queryForObject(
+        userSql,
+        UUID.class,
+        teacher.getName(),
+        teacher.getEmail(),
+        teacher.getPassword()
+      );
+    } else {
+      String userSql =
+        """
+        INSERT INTO user_account (id, name, email, password, role)
+        VALUES (?, ?, ?, ?, 'TEACHER')
+        ON CONFLICT (id) DO UPDATE SET
+          name = EXCLUDED.name,
+          email = EXCLUDED.email,
+          password = EXCLUDED.password,
+          role = 'TEACHER'
+        RETURNING id
+        """;
+
+      id = jdbc.queryForObject(
+        userSql,
+        UUID.class,
+        teacher.getId(),
+        teacher.getName(),
+        teacher.getEmail(),
+        teacher.getPassword()
+      );
+    }
+
+    String teacherSql =
+      """
+      INSERT INTO teacher (user_id, role, staff_number)
+      VALUES (?, 'TEACHER', ?)
+      ON CONFLICT (user_id) DO UPDATE SET
+        staff_number = EXCLUDED.staff_number
+      """;
+
+    jdbc.update(teacherSql, id, teacher.getStaffNumber());
+
+    teacher.setId(id);
+    teacher.setRole("TEACHER");
+    return teacher;
   }
 }

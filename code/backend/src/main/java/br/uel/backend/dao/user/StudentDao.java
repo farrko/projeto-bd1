@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import br.uel.backend.model.user.Student;
 import lombok.AllArgsConstructor;
 
@@ -37,5 +38,61 @@ public class StudentDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  @Transactional
+  public Student save(Student student) {
+    UUID id;
+    if (student.getId() == null) {
+      String userSql =
+        """
+        INSERT INTO user_account (name, email, password, role)
+        VALUES (?, ?, ?, 'STUDENT')
+        RETURNING id
+        """;
+
+      id = jdbc.queryForObject(
+        userSql,
+        UUID.class,
+        student.getName(),
+        student.getEmail(),
+        student.getPassword()
+      );
+    } else {
+      String userSql =
+        """
+        INSERT INTO user_account (id, name, email, password, role)
+        VALUES (?, ?, ?, ?, 'STUDENT')
+        ON CONFLICT (id) DO UPDATE SET
+          name = EXCLUDED.name,
+          email = EXCLUDED.email,
+          password = EXCLUDED.password,
+          role = 'STUDENT'
+        RETURNING id
+        """;
+
+      id = jdbc.queryForObject(
+        userSql,
+        UUID.class,
+        student.getId(),
+        student.getName(),
+        student.getEmail(),
+        student.getPassword()
+      );
+    }
+
+    String studentSql =
+      """
+      INSERT INTO student (user_id, role, enrollment_number)
+      VALUES (?, 'STUDENT', ?)
+      ON CONFLICT (user_id) DO UPDATE SET
+        enrollment_number = EXCLUDED.enrollment_number
+      """;
+
+    jdbc.update(studentSql, id, student.getEnrollmentNumber());
+
+    student.setId(id);
+    student.setRole("STUDENT");
+    return student;
   }
 }

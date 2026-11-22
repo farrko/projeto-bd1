@@ -35,4 +35,25 @@ public class AlternativeDao {
       return Optional.empty();
     }
   }
+
+  public Alternative save(Alternative alternative) {
+    String sql =
+      """
+      INSERT INTO alternative (question_id, letter, text, is_correct)
+      VALUES (?, ?, ?, ?)
+      ON CONFLICT (question_id, letter) DO UPDATE SET
+        text = EXCLUDED.text,
+        is_correct = EXCLUDED.is_correct
+      RETURNING question_id, letter, text, is_correct
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      alternative.getQuestionId(),
+      alternative.getLetter(),
+      alternative.getText(),
+      Boolean.TRUE.equals(alternative.getIsCorrect())
+    );
+  }
 }

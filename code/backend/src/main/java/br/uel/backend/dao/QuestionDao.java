@@ -37,4 +37,45 @@ public class QuestionDao {
       return Optional.empty();
     }
   }
+
+  public Question save(Question question) {
+    if (question.getId() == null) {
+      String sql =
+        """
+        INSERT INTO question (statement, type, created_at, teacher_id)
+        VALUES (?, ?, COALESCE(?, LOCALTIMESTAMP), ?)
+        RETURNING id, statement, type, created_at, teacher_id
+        """;
+
+      return jdbc.queryForObject(
+        sql,
+        rowMapper,
+        question.getStatement(),
+        question.getType(),
+        question.getCreatedAt(),
+        question.getTeacherId()
+      );
+    }
+
+    String sql =
+      """
+      INSERT INTO question (id, statement, type, created_at, teacher_id)
+      VALUES (?, ?, ?, COALESCE(?, LOCALTIMESTAMP), ?)
+      ON CONFLICT (id) DO UPDATE SET
+        statement = EXCLUDED.statement,
+        type = EXCLUDED.type,
+        teacher_id = EXCLUDED.teacher_id
+      RETURNING id, statement, type, created_at, teacher_id
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      question.getId(),
+      question.getStatement(),
+      question.getType(),
+      question.getCreatedAt(),
+      question.getTeacherId()
+    );
+  }
 }

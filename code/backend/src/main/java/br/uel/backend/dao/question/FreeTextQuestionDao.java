@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import br.uel.backend.model.question.FreeTextQuestion;
 import lombok.AllArgsConstructor;
 
@@ -38,5 +39,69 @@ public class FreeTextQuestionDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  @Transactional
+  public FreeTextQuestion save(FreeTextQuestion question) {
+    UUID id;
+    if (question.getId() == null) {
+      String sql =
+        """
+        INSERT INTO question (statement, type, created_at, teacher_id)
+        VALUES (?, 'FREE_TEXT', COALESCE(?, LOCALTIMESTAMP), ?)
+        RETURNING id, created_at
+        """;
+
+      id = jdbc.queryForObject(
+        sql,
+        (rs, rowNum) -> {
+          UUID generatedId = rs.getObject("id", UUID.class);
+          question.setId(generatedId);
+          question.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
+          return generatedId;
+        },
+        question.getStatement(),
+        question.getCreatedAt(),
+        question.getTeacherId()
+      );
+    } else {
+      String sql =
+        """
+        INSERT INTO question (id, statement, type, created_at, teacher_id)
+        VALUES (?, ?, 'FREE_TEXT', COALESCE(?, LOCALTIMESTAMP), ?)
+        ON CONFLICT (id) DO UPDATE SET
+          statement = EXCLUDED.statement,
+          type = 'FREE_TEXT',
+          teacher_id = EXCLUDED.teacher_id
+        RETURNING id, created_at
+        """;
+
+      id = jdbc.queryForObject(
+        sql,
+        (rs, rowNum) -> {
+          UUID savedId = rs.getObject("id", UUID.class);
+          question.setId(savedId);
+          question.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
+          return savedId;
+        },
+        question.getId(),
+        question.getStatement(),
+        question.getCreatedAt(),
+        question.getTeacherId()
+      );
+    }
+
+    String sql =
+      """
+      INSERT INTO free_text_question (question_id, type, expected_answer)
+      VALUES (?, 'FREE_TEXT', ?)
+      ON CONFLICT (question_id) DO UPDATE SET
+        expected_answer = EXCLUDED.expected_answer
+      """;
+
+    jdbc.update(sql, id, question.getExpectedAnswer());
+
+    question.setType("FREE_TEXT");
+    return question;
   }
 }

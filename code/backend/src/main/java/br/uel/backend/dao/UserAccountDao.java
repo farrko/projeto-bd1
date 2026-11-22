@@ -36,4 +36,46 @@ public class UserAccountDao {
       return Optional.empty();
     }
   }
+
+  public UserAccount save(UserAccount userAccount) {
+    if (userAccount.getId() == null) {
+      String sql =
+        """
+        INSERT INTO user_account (name, email, password, role)
+        VALUES (?, ?, ?, ?)
+        RETURNING id, name, email, password, role
+        """;
+
+      return jdbc.queryForObject(
+        sql,
+        rowMapper,
+        userAccount.getName(),
+        userAccount.getEmail(),
+        userAccount.getPassword(),
+        userAccount.getRole()
+      );
+    }
+
+    String sql =
+      """
+      INSERT INTO user_account (id, name, email, password, role)
+      VALUES (?, ?, ?, ?, ?)
+      ON CONFLICT (id) DO UPDATE SET
+        name = EXCLUDED.name,
+        email = EXCLUDED.email,
+        password = EXCLUDED.password,
+        role = EXCLUDED.role
+      RETURNING id, name, email, password, role
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      userAccount.getId(),
+      userAccount.getName(),
+      userAccount.getEmail(),
+      userAccount.getPassword(),
+      userAccount.getRole()
+    );
+  }
 }

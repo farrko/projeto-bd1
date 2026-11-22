@@ -35,4 +35,25 @@ public class AssessmentItemDao {
       return Optional.empty();
     }
   }
+
+  public AssessmentItem save(AssessmentItem assessmentItem) {
+    String sql =
+      """
+      INSERT INTO assessment_item (assessment_id, question_id, points, position)
+      VALUES (?, ?, ?, ?)
+      ON CONFLICT (assessment_id, question_id) DO UPDATE SET
+        points = EXCLUDED.points,
+        position = EXCLUDED.position
+      RETURNING assessment_id, question_id, points, position
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      assessmentItem.getAssessmentId(),
+      assessmentItem.getQuestionId(),
+      assessmentItem.getPoints(),
+      assessmentItem.getPosition()
+    );
+  }
 }

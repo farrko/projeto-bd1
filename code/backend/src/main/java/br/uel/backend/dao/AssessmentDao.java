@@ -41,4 +41,55 @@ public class AssessmentDao {
       return Optional.empty();
     }
   }
+
+  public Assessment save(Assessment assessment) {
+    if (assessment.getId() == null) {
+      String sql =
+        """
+        INSERT INTO assessment (teacher_id, class_group_id, title, description, assessment_date, start_time, end_time)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        RETURNING id, teacher_id, class_group_id, title, description, assessment_date, start_time, end_time
+        """;
+
+      return jdbc.queryForObject(
+        sql,
+        rowMapper,
+        assessment.getTeacherId(),
+        assessment.getClassGroupId(),
+        assessment.getTitle(),
+        assessment.getDescription(),
+        assessment.getAssessmentDate(),
+        assessment.getStartTime(),
+        assessment.getEndTime()
+      );
+    }
+
+    String sql =
+      """
+      INSERT INTO assessment (id, teacher_id, class_group_id, title, description, assessment_date, start_time, end_time)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT (id) DO UPDATE SET
+        teacher_id = EXCLUDED.teacher_id,
+        class_group_id = EXCLUDED.class_group_id,
+        title = EXCLUDED.title,
+        description = EXCLUDED.description,
+        assessment_date = EXCLUDED.assessment_date,
+        start_time = EXCLUDED.start_time,
+        end_time = EXCLUDED.end_time
+      RETURNING id, teacher_id, class_group_id, title, description, assessment_date, start_time, end_time
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      assessment.getId(),
+      assessment.getTeacherId(),
+      assessment.getClassGroupId(),
+      assessment.getTitle(),
+      assessment.getDescription(),
+      assessment.getAssessmentDate(),
+      assessment.getStartTime(),
+      assessment.getEndTime()
+    );
+  }
 }

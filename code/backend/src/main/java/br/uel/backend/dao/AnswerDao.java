@@ -38,4 +38,47 @@ public class AnswerDao {
       return Optional.empty();
     }
   }
+
+  public Answer save(Answer answer) {
+    String sql =
+      """
+      INSERT INTO answer (assessment_id, student_id, question_id, chosen_letter, answer_text, score)
+      VALUES (?, ?, ?, ?, ?, ?)
+      RETURNING assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      answer.getAssessmentId(),
+      answer.getStudentId(),
+      answer.getQuestionId(),
+      answer.getChosenLetter(),
+      answer.getAnswerText(),
+      answer.getScore()
+    );
+  }
+
+  public Answer update(Answer answer) {
+    String sql =
+      """
+      UPDATE answer
+      SET chosen_letter = ?,
+          answer_text = ?,
+          score = ?
+      WHERE assessment_id = ? AND student_id = ? AND question_id = ?
+      RETURNING assessment_id, student_id, question_id, chosen_letter, answer_text, score
+      """;
+
+    return jdbc.queryForObject(
+      sql,
+      rowMapper,
+      answer.getChosenLetter(),
+      answer.getAnswerText(),
+      answer.getScore(),
+      answer.getAssessmentId(),
+      answer.getStudentId(),
+      answer.getQuestionId()
+    );
+  }
 }

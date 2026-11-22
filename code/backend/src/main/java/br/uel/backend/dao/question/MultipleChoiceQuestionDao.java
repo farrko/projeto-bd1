@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import br.uel.backend.model.question.MultipleChoiceQuestion;
 import lombok.AllArgsConstructor;
 
@@ -37,5 +38,68 @@ public class MultipleChoiceQuestionDao {
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
+  }
+
+  @Transactional
+  public MultipleChoiceQuestion save(MultipleChoiceQuestion question) {
+    UUID id;
+    if (question.getId() == null) {
+      String questionSql =
+        """
+        INSERT INTO question (statement, type, created_at, teacher_id)
+        VALUES (?, 'MULTIPLE_CHOICE', COALESCE(?, LOCALTIMESTAMP), ?)
+        RETURNING id, created_at
+        """;
+
+      id = jdbc.queryForObject(
+        questionSql,
+        (rs, rowNum) -> {
+          UUID generatedId = rs.getObject("id", UUID.class);
+          question.setId(generatedId);
+          question.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
+          return generatedId;
+        },
+        question.getStatement(),
+        question.getCreatedAt(),
+        question.getTeacherId()
+      );
+    } else {
+      String questionSql =
+        """
+        INSERT INTO question (id, statement, type, created_at, teacher_id)
+        VALUES (?, ?, 'MULTIPLE_CHOICE', COALESCE(?, LOCALTIMESTAMP), ?)
+        ON CONFLICT (id) DO UPDATE SET
+          statement = EXCLUDED.statement,
+          type = 'MULTIPLE_CHOICE',
+          teacher_id = EXCLUDED.teacher_id
+        RETURNING id, created_at
+        """;
+
+      id = jdbc.queryForObject(
+        questionSql,
+        (rs, rowNum) -> {
+          UUID savedId = rs.getObject("id", UUID.class);
+          question.setId(savedId);
+          question.setCreatedAt(rs.getObject("created_at", LocalDateTime.class));
+          return savedId;
+        },
+        question.getId(),
+        question.getStatement(),
+        question.getCreatedAt(),
+        question.getTeacherId()
+      );
+    }
+
+    String mcSql =
+      """
+      INSERT INTO multiple_choice_question (question_id, type)
+      VALUES (?, 'MULTIPLE_CHOICE')
+      ON CONFLICT (question_id) DO NOTHING
+      """;
+
+    jdbc.update(mcSql, id);
+
+    question.setType("MULTIPLE_CHOICE");
+    return question;
   }
 }
