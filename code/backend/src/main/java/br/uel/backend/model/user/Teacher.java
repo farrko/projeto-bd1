@@ -8,5 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Teacher extends UserAccount {
-  private String staff_number;
+  private String staffNumber;
 }
