@@ -7,7 +7,9 @@ import java.util.UUID;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import br.uel.backend.model.Assessment;
 import br.uel.backend.model.user.Teacher;
+import br.uel.backend.service.AssessmentService;
 import br.uel.backend.service.UserService;
 import lombok.AllArgsConstructor;
 
@@ -16,6 +18,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/users/teachers")
 public class TeacherController {
   private UserService userService;
+  private AssessmentService assessmentService;
 
   @GetMapping({ "", "/" })
   public ResponseEntity<List<Teacher>> all() {
@@ -52,5 +55,14 @@ public class TeacherController {
     Teacher teacherUpdated = userService.saveTeacher(teacher);
 
     return ResponseEntity.status(HttpStatus.OK).body(teacherUpdated);
+  }
+
+  @GetMapping({ "/{id}/assessments", "/{id}/assessments/" })
+  public ResponseEntity<List<Assessment>> getAssessments(@PathVariable UUID id) {
+    Optional<Teacher> teacher = userService.getTeacherById(id);
+    if (teacher.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    List<Assessment> assessments = assessmentService.getAllAssessmentsWithTeacher(id);
+    return ResponseEntity.status(HttpStatus.OK).body(assessments);
   }
 }
