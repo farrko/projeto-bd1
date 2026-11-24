@@ -44,4 +44,32 @@ public class AssessmentService {
   public List<AssessmentItem> getAssessmentItems(Assessment assessment) {
     return assessmentItemDao.findAllInAssessment(assessment.getId());
   }
+
+  public Assessment saveAssessment(Assessment assessment) {
+    validateAssessment(assessment);
+    return assessmentDao.save(assessment);
+  }
+
+  public AssessmentItem saveAssessmentItem(AssessmentItem assessmentItem) {
+    validateAssessmentItem(assessmentItem);
+    return assessmentItemDao.save(assessmentItem);
+  }
+
+  private void validateAssessment(Assessment assessment) {
+    assessment.validateId();
+    assessment.validateTeacherId();
+    assessment.validateClassGroupId();
+    assessment.validateTitle();
+    assessment.validateDescription();
+    assessment.validateAssessmentDate();
+    assessment.validateStartTime();
+    assessment.validateEndTime();
+  }
+
+  private void validateAssessmentItem(AssessmentItem assessmentItem) {
+    assessmentItem.validateAssessmentId();
+    assessmentItem.validateQuestionId();
+    assessmentItem.validatePoints();
+    assessmentItem.validatePosition();
+  }
 }

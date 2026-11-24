@@ -43,12 +43,22 @@ public class AssignmentService {
 
   // .save: cria uma nova entry
   public Assignment save(Assignment assignment) {
+    validateAssignment(assignment);
     return assignmentDao.save(assignment);
   }
 
   // .update: atualiza uma entry existente (separação necessária por conta de trigger BEFORE INSERT)
   public Assignment update(Assignment assignment) {
+    validateAssignment(assignment);
     return assignmentDao.update(assignment);
+  }
+
+  private void validateAssignment(Assignment assignment) {
+    assignment.validateAssessmentId();
+    assignment.validateStudentId();
+    assignment.validateStatus();
+    assignment.validateStartedAt();
+    assignment.validateSubmittedAt();
   }
 }
 

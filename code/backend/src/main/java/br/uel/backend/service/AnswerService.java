@@ -94,11 +94,22 @@ public class AnswerService {
 
   // .save: cria uma nova entry
   public Answer save(Answer answer) {
+    validateAnswer(answer);
     return answerDao.save(answer);
   }
 
   // .update: atualiza uma entry existente (separação necessária por conta de trigger BEFORE INSERT)
   public Answer update(Answer answer) {
+    validateAnswer(answer);
     return answerDao.update(answer);
+  }
+
+  private void validateAnswer(Answer answer) {
+    answer.validateAssessmentId();
+    answer.validateStudentId();
+    answer.validateQuestionId();
+    answer.validateChosenLetter();
+    answer.validateAnswerText();
+    answer.validateScore();
   }
 }

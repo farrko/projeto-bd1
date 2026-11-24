@@ -1,6 +1,5 @@
 package br.uel.backend.model.question;
 
-import br.uel.backend.error.FieldValidationException;
 import br.uel.backend.model.Question;
 import lombok.*;
 

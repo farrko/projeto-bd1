@@ -25,6 +25,7 @@ public class UserService {
   }
 
   public Student saveStudent(Student student) {
+    validateStudent(student);
     return studentDao.save(student);
   }
 
@@ -37,6 +38,25 @@ public class UserService {
   }
 
   public Teacher saveTeacher(Teacher teacher) {
+    validateTeacher(teacher);
     return teacherDao.save(teacher);
+  }
+
+  private void validateStudent(Student student) {
+    student.validateId();
+    student.validateName();
+    student.validateEmail();
+    student.validatePassword();
+    student.validateRole();
+    student.validateEnrollmentNumber();
+  }
+
+  private void validateTeacher(Teacher teacher) {
+    teacher.validateId();
+    teacher.validateName();
+    teacher.validateEmail();
+    teacher.validatePassword();
+    teacher.validateRole();
+    teacher.validateStaffNumber();
   }
 }

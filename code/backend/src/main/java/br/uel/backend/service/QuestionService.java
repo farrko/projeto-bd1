@@ -44,4 +44,43 @@ public class QuestionService {
   public List<Alternative> getAlternativesFromQuestion(UUID questionId) {
     return alternativeDao.findAllFromQuestion(questionId);
   }
+
+  public MultipleChoiceQuestion saveMultipleChoiceQuestion(MultipleChoiceQuestion question) {
+    validateMultipleChoiceQuestion(question);
+    return multipleChoiceQuestionDao.save(question);
+  }
+
+  public FreeTextQuestion saveFreeTextQuestion(FreeTextQuestion question) {
+    validateFreeTextQuestion(question);
+    return freeTextQuestionDao.save(question);
+  }
+
+  public Alternative saveAlternative(Alternative alternative) {
+    validateAlternative(alternative);
+    return alternativeDao.save(alternative);
+  }
+
+  private void validateMultipleChoiceQuestion(MultipleChoiceQuestion question) {
+    question.validateId();
+    question.validateTeacherId();
+    question.validateStatement();
+    question.validateType();
+    question.validateCreatedAt();
+  }
+
+  private void validateFreeTextQuestion(FreeTextQuestion question) {
+    question.validateId();
+    question.validateTeacherId();
+    question.validateStatement();
+    question.validateType();
+    question.validateCreatedAt();
+    question.validateExpectedAnswer();
+  }
+
+  private void validateAlternative(Alternative alternative) {
+    alternative.validateQuestionId();
+    alternative.validateLetter();
+    alternative.validateText();
+    alternative.validateIsCorrect();
+  }
 }

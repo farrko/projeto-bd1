@@ -55,6 +55,24 @@ public class ClassGroupService {
   }
 
   public ClassGroup saveClassGroup(ClassGroup classGroup) {
+    validateClassGroup(classGroup);
     return classGroupDao.save(classGroup);
+  }
+
+  public ClassEnrollment saveClassEnrollment(ClassEnrollment classEnrollment) {
+    validateClassEnrollment(classEnrollment);
+    return classEnrollmentDao.save(classEnrollment);
+  }
+
+  private void validateClassGroup(ClassGroup classGroup) {
+    classGroup.validateId();
+    classGroup.validateName();
+    classGroup.validateYear();
+    classGroup.validateSemester();
+  }
+
+  private void validateClassEnrollment(ClassEnrollment classEnrollment) {
+    classEnrollment.validateStudentId();
+    classEnrollment.validateClassGroupId();
   }
 }
