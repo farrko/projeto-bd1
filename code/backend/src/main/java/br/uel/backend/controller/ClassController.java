@@ -7,7 +7,9 @@ import java.util.UUID;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import br.uel.backend.dto.EnrollmentRequest;
 import br.uel.backend.model.Assessment;
+import br.uel.backend.model.ClassEnrollment;
 import br.uel.backend.model.ClassGroup;
 import br.uel.backend.model.user.Student;
 import br.uel.backend.service.ClassGroupService;
@@ -70,5 +72,17 @@ public class ClassController {
 
     List<Assessment> assessments = classGroupService.getAllAssessmentsInClassGroup(id);
     return ResponseEntity.status(HttpStatus.OK).body(assessments);
+  }
+
+  @PostMapping({ "/{id}/students", "/{id}/students/" })
+  public ResponseEntity<ClassEnrollment> enrollStudent(@PathVariable UUID id, @RequestBody EnrollmentRequest request) {
+    ClassEnrollment enrollment = classGroupService.enrollStudent(id, request.studentIds().get(0));
+    return ResponseEntity.status(HttpStatus.CREATED).body(enrollment);
+  }
+
+  @DeleteMapping({ "/{id}/students/{studentId}", "/{id}/students/{studentId}/" })
+  public ResponseEntity<Void> unenrollStudent(@PathVariable UUID id, @PathVariable UUID studentId) {
+    classGroupService.unenrollStudent(id, studentId);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

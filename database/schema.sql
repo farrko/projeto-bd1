@@ -425,7 +425,10 @@ CREATE TRIGGER answer_lifecycle_trigger BEFORE INSERT OR UPDATE OR DELETE ON ans
 CREATE VIEW assignment_total_score AS
 SELECT asg.assessment_id,
   asg.student_id,
+  asg.status,
+  asg.started_at,
+  asg.submitted_at,
   COALESCE(SUM(ans.score), 0) AS total_score,
   COUNT(ans.question_id) FILTER (WHERE ans.score IS NULL) AS pending_count
 FROM assignment asg
-LEFT JOIN answer ans ON ans.assessment_id = asg.assessment_id AND ans.student_id = asg.student_id GROUP BY asg.assessment_id, asg.student_id;
+LEFT JOIN answer ans ON ans.assessment_id = asg.assessment_id AND ans.student_id = asg.student_id GROUP BY asg.assessment_id, asg.student_id, asg.status, asg.started_at, asg.submitted_at;

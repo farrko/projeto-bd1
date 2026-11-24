@@ -11,8 +11,11 @@ import br.uel.backend.dao.AssignmentDao;
 import br.uel.backend.dao.user.StudentDao;
 import br.uel.backend.model.Assessment;
 import br.uel.backend.model.Assignment;
+import br.uel.backend.model.AssignmentWithScore;
 import br.uel.backend.model.user.Student;
 import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -53,6 +56,10 @@ public class AssignmentService {
     return studentDao.findById(assignment.getStudentId()).get();
   }
 
+  public Optional<AssignmentWithScore> getAssignmentWithScore(UUID assessmentId, UUID studentId) {
+    return assignmentDao.findWithScore(assessmentId, studentId);
+  }
+
   // .save: cria uma nova entry
   public Assignment save(Assignment assignment) {
     validateAssignment(assignment);
@@ -71,6 +78,68 @@ public class AssignmentService {
     assignment.validateStatus();
     assignment.validateStartedAt();
     assignment.validateSubmittedAt();
+  }
+
+  public Assignment startAssignment(UUID assessmentId, UUID studentId) {
+    Optional<Assignment> existing = assignmentDao.findById(assessmentId, studentId);
+    if (existing.isEmpty()) {
+      throw new IllegalArgumentException("Assignment not found");
+    }
+    Assignment assignment = existing.get();
+    if (!"ASSIGNED".equals(assignment.getStatus())) {
+      throw new IllegalArgumentException("Can only start an ASSIGNED assignment");
+    }
+    assignment.setStatus("IN_PROGRESS");
+    assignment.setStartedAt(LocalDateTime.now());
+    return assignmentDao.update(assignment);
+  }
+
+  public Assignment submitAssignment(UUID assessmentId, UUID studentId) {
+    Optional<Assignment> existing = assignmentDao.findById(assessmentId, studentId);
+    if (existing.isEmpty()) {
+      throw new IllegalArgumentException("Assignment not found");
+    }
+    Assignment assignment = existing.get();
+    if (!"IN_PROGRESS".equals(assignment.getStatus())) {
+      throw new IllegalArgumentException("Can only submit an IN_PROGRESS assignment");
+    }
+    assignment.setStatus("SUBMITTED");
+    assignment.setSubmittedAt(LocalDateTime.now());
+    return assignmentDao.update(assignment);
+  }
+
+  public Assignment gradeAssignment(UUID assessmentId, UUID studentId) {
+    Optional<Assignment> existing = assignmentDao.findById(assessmentId, studentId);
+    if (existing.isEmpty()) {
+      throw new IllegalArgumentException("Assignment not found");
+    }
+    Assignment assignment = existing.get();
+    if (!"SUBMITTED".equals(assignment.getStatus())) {
+      throw new IllegalArgumentException("Can only grade a SUBMITTED assignment");
+    }
+    assignment.setStatus("GRADED");
+    return assignmentDao.update(assignment);
+  }
+
+  public List<Assignment> assignStudentsToAssessment(UUID assessmentId, List<UUID> studentIds) {
+    Assessment assessment = assessmentDao.findById(assessmentId)
+      .orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
+    
+    List<Assignment> created = new java.util.ArrayList<>();
+    for (UUID studentId : studentIds) {
+      Student student = studentDao.findById(studentId)
+        .orElseThrow(() -> new IllegalArgumentException("Student not found: " + studentId));
+      
+      Assignment assignment = Assignment.builder()
+        .assessmentId(assessmentId)
+        .studentId(studentId)
+        .status("ASSIGNED")
+        .build();
+      
+      Assignment saved = assignmentDao.save(assignment);
+      created.add(saved);
+    }
+    return created;
   }
 }
 

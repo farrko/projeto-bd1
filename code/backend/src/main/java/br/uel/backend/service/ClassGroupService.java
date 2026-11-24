@@ -82,4 +82,22 @@ public class ClassGroupService {
     classEnrollment.validateStudentId();
     classEnrollment.validateClassGroupId();
   }
+
+  public ClassEnrollment enrollStudent(UUID classGroupId, UUID studentId) {
+    classGroupDao.findById(classGroupId)
+      .orElseThrow(() -> new IllegalArgumentException("Class group not found"));
+    studentDao.findById(studentId)
+      .orElseThrow(() -> new IllegalArgumentException("Student not found"));
+
+    ClassEnrollment enrollment = ClassEnrollment.builder()
+      .classGroupId(classGroupId)
+      .studentId(studentId)
+      .build();
+
+    return classEnrollmentDao.save(enrollment);
+  }
+
+  public void unenrollStudent(UUID classGroupId, UUID studentId) {
+    classEnrollmentDao.delete(classGroupId, studentId);
+  }
 }

@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.Assignment;
+import br.uel.backend.model.AssignmentWithScore;
 import lombok.AllArgsConstructor;
+import java.math.BigDecimal;
 
 @Repository
 @AllArgsConstructor
@@ -69,6 +71,29 @@ public class AssignmentDao {
       """;
 
     return jdbc.query(sql, rowMapper, studentId);
+  }
+
+  public Optional<AssignmentWithScore> findWithScore(UUID assessmentId, UUID studentId) {
+    String sql =
+      """
+      SELECT assessment_id, student_id, status, started_at, submitted_at, total_score, pending_count
+      FROM assignment_total_score
+      WHERE assessment_id = ? AND student_id = ?
+      """;
+
+    try {
+      return Optional.ofNullable(jdbc.queryForObject(sql, (rs, rowNum) -> AssignmentWithScore.builder()
+        .assessmentId(rs.getObject("assessment_id", UUID.class))
+        .studentId(rs.getObject("student_id", UUID.class))
+        .status(rs.getString("status"))
+        .startedAt(rs.getObject("started_at", LocalDateTime.class))
+        .submittedAt(rs.getObject("submitted_at", LocalDateTime.class))
+        .totalScore(rs.getObject("total_score", BigDecimal.class))
+        .pendingCount(rs.getObject("pending_count", Long.class).intValue())
+        .build(), assessmentId, studentId));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
   }
 
   public Assignment save(Assignment assignment) {

@@ -1,5 +1,6 @@
 package br.uel.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,6 +72,9 @@ public class QuestionService {
 
   @Transactional
   public MultipleChoiceQuestion saveMultipleChoiceQuestionWithAlternatives(MultipleChoiceQuestion question, List<Alternative> alternatives) {
+    if (question.getCreatedAt() == null) {
+      question.setCreatedAt(LocalDateTime.now());
+    }
     validateMultipleChoiceQuestion(question);
     if (alternatives == null || alternatives.size() < 2) {
       throw new IllegalArgumentException("Multiple choice question must have at least 2 alternatives");

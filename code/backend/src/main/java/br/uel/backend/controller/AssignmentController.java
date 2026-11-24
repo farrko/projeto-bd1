@@ -8,6 +8,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import br.uel.backend.model.Assignment;
+import br.uel.backend.model.AssignmentWithScore;
 import br.uel.backend.service.AssignmentService;
 import lombok.AllArgsConstructor;
 
@@ -50,5 +51,38 @@ public class AssignmentController {
     Assignment assignmentUpdated = assignmentService.update(assignment);
 
     return ResponseEntity.status(HttpStatus.OK).body(assignmentUpdated);
+  }
+
+  @GetMapping({ "/{assessmentId}/{studentId}/score", "/{assessmentId}/{studentId}/score/" })
+  public ResponseEntity<AssignmentWithScore> getScore(@PathVariable UUID assessmentId, @PathVariable UUID studentId) {
+    Optional<AssignmentWithScore> score = assignmentService.getAssignmentWithScore(assessmentId, studentId);
+    if (score.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    return ResponseEntity.status(HttpStatus.OK).body(score.get());
+  }
+
+  @PatchMapping({ "/{assessmentId}/{studentId}/start", "/{assessmentId}/{studentId}/start/" })
+  public ResponseEntity<Assignment> startAssignment(@PathVariable UUID assessmentId, @PathVariable UUID studentId) {
+    Assignment updated = assignmentService.startAssignment(assessmentId, studentId);
+    return ResponseEntity.status(HttpStatus.OK).body(updated);
+  }
+
+  @PatchMapping({ "/{assessmentId}/{studentId}/submit", "/{assessmentId}/{studentId}/submit/" })
+  public ResponseEntity<Assignment> submitAssignment(@PathVariable UUID assessmentId, @PathVariable UUID studentId) {
+    Assignment updated = assignmentService.submitAssignment(assessmentId, studentId);
+    return ResponseEntity.status(HttpStatus.OK).body(updated);
+  }
+
+  @PatchMapping({ "/{assessmentId}/{studentId}/grade", "/{assessmentId}/{studentId}/grade/" })
+  public ResponseEntity<Assignment> gradeAssignment(@PathVariable UUID assessmentId, @PathVariable UUID studentId) {
+    Assignment updated = assignmentService.gradeAssignment(assessmentId, studentId);
+    return ResponseEntity.status(HttpStatus.OK).body(updated);
+  }
+
+  @PostMapping({ "/{assessmentId}/students", "/{assessmentId}/students/" })
+  public ResponseEntity<List<Assignment>> assignStudentsToAssessment(
+      @PathVariable UUID assessmentId,
+      @RequestBody List<UUID> studentIds) {
+    List<Assignment> created = assignmentService.assignStudentsToAssessment(assessmentId, studentIds);
+    return ResponseEntity.status(HttpStatus.CREATED).body(created);
   }
 }

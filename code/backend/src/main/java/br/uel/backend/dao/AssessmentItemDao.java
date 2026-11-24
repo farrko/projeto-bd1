@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import br.uel.backend.model.AssessmentItem;
 import lombok.AllArgsConstructor;
 
@@ -78,5 +79,14 @@ public class AssessmentItemDao {
       assessmentItem.getPoints(),
       assessmentItem.getPosition()
     );
+  }
+
+  @Transactional
+  public List<AssessmentItem> reorderItems(UUID assessmentId, List<UUID> questionIds) {
+    String sql = "UPDATE assessment_item SET position = ? WHERE assessment_id = ? AND question_id = ?";
+    for (int i = 0; i < questionIds.size(); i++) {
+      jdbc.update(sql, i + 1, assessmentId, questionIds.get(i));
+    }
+    return findAllInAssessment(assessmentId);
   }
 }

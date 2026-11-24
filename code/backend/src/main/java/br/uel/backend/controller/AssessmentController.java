@@ -7,7 +7,9 @@ import java.util.UUID;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import br.uel.backend.dto.ReorderAssessmentItemsRequest;
 import br.uel.backend.model.Assessment;
+import br.uel.backend.model.AssessmentItem;
 import br.uel.backend.service.AssessmentService;
 import lombok.AllArgsConstructor;
 
@@ -54,5 +56,13 @@ public class AssessmentController {
     Assessment assessmentUpdated = assessmentService.saveAssessment(assessment);
 
     return ResponseEntity.status(HttpStatus.OK).body(assessmentUpdated);
+  }
+
+  @PatchMapping({ "/{id}/items/reorder", "/{id}/items/reorder/" })
+  public ResponseEntity<List<AssessmentItem>> reorderItems(
+      @PathVariable UUID id,
+      @RequestBody ReorderAssessmentItemsRequest request) {
+    List<AssessmentItem> items = assessmentService.reorderAssessmentItems(id, request.questionIds());
+    return ResponseEntity.status(HttpStatus.OK).body(items);
   }
 }

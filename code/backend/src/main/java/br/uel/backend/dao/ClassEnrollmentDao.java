@@ -67,4 +67,9 @@ public class ClassEnrollmentDao {
     jdbc.update(sql, classEnrollment.getStudentId(), classEnrollment.getClassGroupId());
     return classEnrollment;
   }
+
+  public void delete(UUID classGroupId, UUID studentId) {
+    String sql = "DELETE FROM class_enrollment WHERE class_group_id = ? AND student_id = ?";
+    jdbc.update(sql, classGroupId, studentId);
+  }
 }
