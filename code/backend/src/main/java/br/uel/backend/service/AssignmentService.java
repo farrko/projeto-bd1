@@ -25,12 +25,24 @@ public class AssignmentService {
     return assignmentDao.findById(assessmentId, studentId);
   }
 
+  public List<Assignment> getAllAssignments() {
+    return assignmentDao.findAll();
+  }
+
   public List<Assignment> getAllAssignmentsWithAssessment(Assessment assessment) {
     return assignmentDao.findAllWithAssessment(assessment.getId());
   }
 
   public List<Assignment> getAllAssignmentsWithAssessment(UUID assessmentId) {
     return assignmentDao.findAllWithAssessment(assessmentId);
+  }
+
+  public List<Assignment> getAllAssignmentsWithStudent(Student student) {
+    return assignmentDao.findAllWithStudent(student.getId());
+  }
+
+  public List<Assignment> getAllAssignmentsWithStudent(UUID studentId) {
+    return assignmentDao.findAllWithStudent(studentId);
   }
 
   public Assessment getAssignmentAssessment(Assignment assignment) {
