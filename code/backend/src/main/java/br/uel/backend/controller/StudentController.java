@@ -13,31 +13,31 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/users/students/")
+@RequestMapping("/api/users/students")
 public class StudentController {
   private UserService userService;
 
-  @GetMapping
+  @GetMapping({ "", "/" })
   public ResponseEntity<List<Student>> all() {
     List<Student> students = userService.getAllStudents();
     if (students == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     return ResponseEntity.status(HttpStatus.OK).body(students);
   }
 
-  @GetMapping("/{id}")
+  @GetMapping({ "/{id}", "/{id}/" })
   public ResponseEntity<Student> getById(@PathVariable UUID id) {
     Optional<Student> student = userService.getStudentById(id);
     if (student.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     return ResponseEntity.status(HttpStatus.OK).body(student.get());
   }
 
-  @PostMapping
+  @PostMapping({ "", "/" })
   public ResponseEntity<Student> create(@RequestBody Student student) {
     Student studentCreated = userService.saveStudent(student);
     return ResponseEntity.status(HttpStatus.CREATED).body(studentCreated);
   }
 
-  @PatchMapping("/{id}")
+  @PatchMapping({ "/{id}", "/{id}/" })
   public ResponseEntity<Student> update(@PathVariable UUID id, @RequestBody Student updates) {
     Optional<Student> s = userService.getStudentById(id);
     if (s.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
