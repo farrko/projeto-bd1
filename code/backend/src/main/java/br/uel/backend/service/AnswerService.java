@@ -15,6 +15,7 @@ import br.uel.backend.model.Assessment;
 import br.uel.backend.model.Question;
 import br.uel.backend.model.user.Student;
 import lombok.AllArgsConstructor;
+import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor
@@ -62,6 +63,22 @@ public class AnswerService {
 
   public List<Answer> getAllAnswersWithAssessmentAndStudent(UUID assessmentId, UUID studentId) {
     return answerDao.findAllWithAssessmentAndStudent(assessmentId, studentId);
+  }
+
+  public List<Answer> getAnswersByAssignment(UUID assessmentId, UUID studentId) {
+    return answerDao.findAllWithAssessmentAndStudent(assessmentId, studentId);
+  }
+
+  public Answer updateScore(UUID assessmentId, UUID studentId, UUID questionId, BigDecimal score) {
+    Optional<Answer> existing = answerDao.findById(assessmentId, studentId, questionId);
+
+    if (existing.isEmpty()) {
+      throw new IllegalArgumentException("Answer not found");
+    }
+
+    Answer answer = existing.get();
+    answer.setScore(score);
+    return answerDao.update(answer);
   }
 
   public List<Answer> getAllAnswersWithAssessmentAndQuestion(Assessment assessment, Question question) {
