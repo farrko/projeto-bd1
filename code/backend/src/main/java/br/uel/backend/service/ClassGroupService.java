@@ -7,9 +7,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import br.uel.backend.dao.AssessmentDao;
 import br.uel.backend.dao.ClassEnrollmentDao;
 import br.uel.backend.dao.ClassGroupDao;
 import br.uel.backend.dao.user.StudentDao;
+import br.uel.backend.model.Assessment;
 import br.uel.backend.model.ClassEnrollment;
 import br.uel.backend.model.ClassGroup;
 import br.uel.backend.model.user.Student;
@@ -21,6 +23,7 @@ public class ClassGroupService {
   private ClassGroupDao classGroupDao;
   private ClassEnrollmentDao classEnrollmentDao;
   private StudentDao studentDao;
+  private AssessmentDao assessmentDao;
 
   public Optional<ClassGroup> getClassGroupById(UUID id) {
     return classGroupDao.findById(id);
@@ -52,6 +55,10 @@ public class ClassGroupService {
     }
 
     return students;
+  }
+
+  public List<Assessment> getAllAssessmentsInClassGroup(UUID classGroupId) {
+    return assessmentDao.findAllWithClassGroup(classGroupId);
   }
 
   public ClassGroup saveClassGroup(ClassGroup classGroup) {

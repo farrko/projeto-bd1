@@ -53,6 +53,39 @@ public class AssessmentDao {
     return jdbc.query(sql, rowMapper);
   }
 
+  public List<Assessment> findAllWithClassGroup(UUID classGroupId) {
+    String sql =
+      """
+      SELECT id, teacher_id, class_group_id, title, description, assessment_date, start_time, end_time
+      FROM assessment
+      WHERE class_group_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, classGroupId);
+  }
+
+  public List<Assessment> findAllWithTeacher(UUID teacherId) {
+    String sql =
+      """
+      SELECT id, teacher_id, class_group_id, title, description, assessment_date, start_time, end_time
+      FROM assessment
+      WHERE teacher_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, teacherId);
+  }
+
+  public List<Assessment> findAllWithClassGroupAndTeacher(UUID classGroupId, UUID teacherId) {
+    String sql =
+      """
+      SELECT id, teacher_id, class_group_id, title, description, assessment_date, start_time, end_time
+      FROM assessment
+      WHERE class_group_id = ? AND teacher_id = ?
+      """;
+
+    return jdbc.query(sql, rowMapper, classGroupId, teacherId);
+  }
+
   public Assessment save(Assessment assessment) {
     if (assessment.getId() == null) {
       String sql =

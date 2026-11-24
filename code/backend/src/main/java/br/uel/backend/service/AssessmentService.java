@@ -32,6 +32,30 @@ public class AssessmentService {
     return assessmentDao.findAll();
   }
 
+  public List<Assessment> getAllAssessmentsWithClassGroup(ClassGroup classGroup) {
+    return assessmentDao.findAllWithClassGroup(classGroup.getId());
+  }
+
+  public List<Assessment> getAllAssessmentsWithClassGroup(UUID classGroupId) {
+    return assessmentDao.findAllWithClassGroup(classGroupId);
+  }
+
+  public List<Assessment> getAllAssessmentsWithTeacher(Teacher teacher) {
+    return assessmentDao.findAllWithTeacher(teacher.getId());
+  }
+
+  public List<Assessment> getAllAssessmentsWithTeacher(UUID teacherId) {
+    return assessmentDao.findAllWithTeacher(teacherId);
+  }
+
+  public List<Assessment> getAllAssessmentsWithClassGroupAndTeacher(ClassGroup classGroup, Teacher teacher) {
+    return assessmentDao.findAllWithClassGroupAndTeacher(classGroup.getId(), teacher.getId());
+  }
+
+  public List<Assessment> getAllAssessmentsWithClassGroupAndTeacher(UUID classGroupId, UUID teacherId) {
+    return assessmentDao.findAllWithClassGroupAndTeacher(classGroupId, teacherId);
+  }
+
   public Teacher getAssessmentTeacher(Assessment assessment) {
     return teacherDao.findById(assessment.getTeacherId()).get();
   }
