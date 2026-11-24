@@ -126,9 +126,7 @@ public class QuestionController {
   }
 
   @PatchMapping({ "/api/questions/mc/{mcqId}/correct-alternative", "/api/questions/mc/{mcqId}/correct-alternative/" })
-  public ResponseEntity<Void> changeCorrectAlternative(
-      @PathVariable UUID mcqId,
-      @RequestBody Map<String, String> request) {
+  public ResponseEntity<Void> changeCorrectAlternative(@PathVariable UUID mcqId, @RequestBody Map<String, String> request) {
     String newCorrectLetter = request.get("letter");
     if (newCorrectLetter == null || newCorrectLetter.isBlank()) {
       return ResponseEntity.badRequest().build();

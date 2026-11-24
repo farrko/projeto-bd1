@@ -1,0 +1,32 @@
+package br.uel.backend.error;
+
+public class ErrorCodes {
+  // Validation
+  public static final String VALIDATION_ERROR = "VALIDATION_ERROR";
+  public static final String INVALID_ARGUMENT = "INVALID_ARGUMENT";
+
+  // Database
+  public static final String UNIQUE_CONSTRAINT_VIOLATION = "UNIQUE_CONSTRAINT_VIOLATION";
+  public static final String FOREIGN_KEY_VIOLATION = "FOREIGN_KEY_VIOLATION";
+  public static final String CHECK_CONSTRAINT_VIOLATION = "CHECK_CONSTRAINT_VIOLATION";
+  public static final String EXCLUSION_VIOLATION = "EXCLUSION_VIOLATION";
+  public static final String TRIGGER_EXCEPTION = "TRIGGER_EXCEPTION";
+  public static final String DATA_INTEGRITY_VIOLATION = "DATA_INTEGRITY_VIOLATION";
+  public static final String DATABASE_ERROR = "DATABASE_ERROR";
+
+  // Business logic
+  public static final String MIN_ALTERNATIVES_REQUIRED = "MIN_ALTERNATIVES_REQUIRED";
+  public static final String EXACTLY_ONE_CORRECT_ALTERNATIVE = "EXACTLY_ONE_CORRECT_ALTERNATIVE";
+  public static final String CLASS_GROUP_IMMUTABLE = "CLASS_GROUP_IMMUTABLE";
+  public static final String STUDENT_NOT_ENROLLED = "STUDENT_NOT_ENROLLED";
+  public static final String ENROLLMENT_HAS_ASSIGNMENTS = "ENROLLMENT_HAS_ASSIGNMENTS";
+  public static final String POINTS_IMMUTABLE_AFTER_ANSWERS = "POINTS_IMMUTABLE_AFTER_ANSWERS";
+  public static final String CORRECT_ALTERNATIVE_IMMUTABLE = "CORRECT_ALTERNATIVE_IMMUTABLE";
+  public static final String INVALID_STATUS_TRANSITION = "INVALID_STATUS_TRANSITION";
+  public static final String ANSWER_ONLY_IN_PROGRESS = "ANSWER_ONLY_IN_PROGRESS";
+  public static final String FREE_TEXT_GRADING_ONLY_SUBMITTED = "FREE_TEXT_GRADING_ONLY_SUBMITTED";
+  public static final String CANNOT_GRADE_WITHOUT_SCORES = "CANNOT_GRADE_WITHOUT_SCORES";
+  public static final String ANSWER_IMMUTABLE_AFTER_GRADED = "ANSWER_IMMUTABLE_AFTER_GRADED";
+  public static final String SCORE_EXCEEDS_POINTS = "SCORE_EXCEEDS_POINTS";
+  public static final String QUESTION_TYPE_MISMATCH = "QUESTION_TYPE_MISMATCH";
+}
