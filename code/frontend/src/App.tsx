@@ -1,6 +1,10 @@
-const App = () => {
+import type React from "react";
+
+const App: React.FC = () => {
   return (
-    <></>
+    <div>
+      aajshnakjshakjsh
+    </div>
   )
 }
 
