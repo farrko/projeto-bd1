@@ -25,6 +25,9 @@ public class UserService {
   }
 
   public Student saveStudent(Student student) {
+    if (student.getRole() == null) {
+      student.setRole("STUDENT");
+    }
     validateStudent(student);
     return studentDao.save(student);
   }
@@ -38,6 +41,9 @@ public class UserService {
   }
 
   public Teacher saveTeacher(Teacher teacher) {
+    if (teacher.getRole() == null) {
+      teacher.setRole("TEACHER");
+    }
     validateTeacher(teacher);
     return teacherDao.save(teacher);
   }

@@ -97,6 +97,12 @@ public class QuestionService {
   }
 
   public FreeTextQuestion saveFreeTextQuestion(FreeTextQuestion question) {
+    if (question.getType() == null) {
+      question.setType("FREE_TEXT");
+    }
+    if (question.getCreatedAt() == null) {
+      question.setCreatedAt(LocalDateTime.now());
+    }
     validateFreeTextQuestion(question);
     return freeTextQuestionDao.save(question);
   }
