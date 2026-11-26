@@ -1,4 +1,4 @@
-import { ApiError } from "./types";
+import { ApiError } from "./types"
 
 const API_BASE = 'http://localhost:8080/api';
 

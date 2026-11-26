@@ -1,10 +1,11 @@
-import type React from "react";
+import type React from "react"
+import { AppShell } from "./components/layout/AppShell"
 
 const App: React.FC = () => {
   return (
-    <div>
-      aajshnakjshakjsh
-    </div>
+    <AppShell>
+      <h1>abcdef</h1>
+    </AppShell>
   )
 }
 

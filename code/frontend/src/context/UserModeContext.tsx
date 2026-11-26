@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
-import { getTeachers, getStudents } from '../api';
-import type { Teacher, Student, UUID } from '../api';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react'
+import { getTeachers, getStudents } from '../api'
+import type { Teacher, Student, UUID } from '../api'
 
 export type ViewMode = 'ALL' | 'TEACHER' | 'STUDENT';
 
