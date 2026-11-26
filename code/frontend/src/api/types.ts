@@ -117,6 +117,55 @@ export interface ScoreAnswerRequest {
   score: number;
 }
 
+export interface AssessmentAverageReport {
+  assessmentId: UUID;
+  title: string;
+  classGroup: string;
+  assessmentDate: string;
+  gradedCount: number;
+  averageScore: number;
+  maxScore: number;
+  averagePercent: number;
+  lowestScore: number;
+  highestScore: number;
+}
+
+export interface ScoreDistributionBand {
+  scoreRange: string;
+  studentCount: number;
+}
+
+export interface StudentVsClassAverageReport {
+  assessmentDate: string;
+  title: string;
+  studentScore: number;
+  classAverage: number;
+  difference: number;
+}
+
+export interface MostMissedQuestionReport {
+  errorRank: number;
+  questionId: UUID;
+  statement: string;
+  answerCount: number;
+  wrongCount: number;
+  errorPercent: number;
+}
+
+export interface AssessmentAveragesParams {
+  startDate?: string;
+  endDate?: string;
+  minGraded?: number;
+}
+
+export interface MostMissedQuestionsParams {
+  startDate?: string;
+  endDate?: string;
+  minAnswers?: number;
+  top?: number;
+  search?: string;
+}
+
 export class ApiError extends Error {
   public code: string;
   public details: Record<string, unknown>;

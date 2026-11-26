@@ -17,6 +17,12 @@ import type {
   AnswerCreateRequest,
   ReorderAssessmentItemsRequest,
   ScoreAnswerRequest,
+  AssessmentAverageReport,
+  ScoreDistributionBand,
+  StudentVsClassAverageReport,
+  MostMissedQuestionReport,
+  AssessmentAveragesParams,
+  MostMissedQuestionsParams,
 } from './types';
 
 // Teachers
@@ -78,3 +84,21 @@ export const createAnswer = (assessmentId: string, studentId: string, request: A
 export const updateAnswer = (assessmentId: string, studentId: string, questionId: string, request: AnswerCreateRequest) => api.patch<Answer>(`/assignments/${assessmentId}/${studentId}/answers/${questionId}`, request);
 export const scoreAnswer = (assessmentId: string, studentId: string, questionId: string, score: number) => api.patch<Answer>(`/assignments/${assessmentId}/${studentId}/answers/${questionId}/score`, { score } as ScoreAnswerRequest);
 
+const  buildQueryString = (params?: object): string => {
+  if (!params) return '';
+
+  const searchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined) {
+      searchParams.set(key, String(value));
+    }
+  }
+  const query = searchParams.toString();
+  return query ? `?${query}` : '';
+}
+
+// Reports
+export const getAssessmentAverages = (params?: AssessmentAveragesParams) => api.get<AssessmentAverageReport[]>(`/reports/assessment-averages${buildQueryString(params)}`);
+export const getScoreDistribution = (assessmentId: string) => api.get<ScoreDistributionBand[]>(`/reports/assessments/${assessmentId}/score-distribution`);
+export const getStudentVsClassAverage = (studentId: string) => api.get<StudentVsClassAverageReport[]>(`/reports/students/${studentId}/vs-class-average`);
+export const getMostMissedQuestions = (params?: MostMissedQuestionsParams) => api.get<MostMissedQuestionReport[]>(`/reports/questions/most-missed${buildQueryString(params)}`);
