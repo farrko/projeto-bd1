@@ -58,6 +58,15 @@ public class AssessmentController {
     return ResponseEntity.status(HttpStatus.OK).body(assessmentUpdated);
   }
 
+  @GetMapping({ "/{id}/items", "/{id}/items/" })
+  public ResponseEntity<List<AssessmentItem>> getAssessmentItems(@PathVariable UUID id) {
+    Optional<Assessment> a = assessmentService.getAssessmentById(id);
+    if (a.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    List<AssessmentItem> items = assessmentService.getAssessmentItems(a.get());
+    return ResponseEntity.status(HttpStatus.OK).body(items);
+  }
+
   @PatchMapping({ "/{id}/items/reorder", "/{id}/items/reorder/" })
   public ResponseEntity<List<AssessmentItem>> reorderItems(@PathVariable UUID id, @RequestBody ReorderAssessmentItemsRequest request) {
     List<AssessmentItem> items = assessmentService.reorderAssessmentItems(id, request.questionIds());
