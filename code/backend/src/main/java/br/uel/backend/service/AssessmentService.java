@@ -15,8 +15,6 @@ import br.uel.backend.model.AssessmentItem;
 import br.uel.backend.model.ClassGroup;
 import br.uel.backend.model.user.Teacher;
 import lombok.AllArgsConstructor;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -100,8 +98,7 @@ public class AssessmentService {
   }
 
   public List<AssessmentItem> reorderAssessmentItems(UUID assessmentId, List<UUID> questionIds) {
-    assessmentDao.findById(assessmentId)
-      .orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
+    assessmentDao.findById(assessmentId).orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
     return assessmentItemDao.reorderItems(assessmentId, questionIds);
   }
 }

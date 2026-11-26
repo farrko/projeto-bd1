@@ -15,7 +15,6 @@ import br.uel.backend.model.AssignmentWithScore;
 import br.uel.backend.model.user.Student;
 import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -122,20 +121,18 @@ public class AssignmentService {
   }
 
   public List<Assignment> assignStudentsToAssessment(UUID assessmentId, List<UUID> studentIds) {
-    Assessment assessment = assessmentDao.findById(assessmentId)
-      .orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
-    
+    assessmentDao.findById(assessmentId).orElseThrow(() -> new IllegalArgumentException("Assessment not found"));
+
     List<Assignment> created = new java.util.ArrayList<>();
     for (UUID studentId : studentIds) {
-      Student student = studentDao.findById(studentId)
-        .orElseThrow(() -> new IllegalArgumentException("Student not found: " + studentId));
-      
+      studentDao.findById(studentId).orElseThrow(() -> new IllegalArgumentException("Student not found: " + studentId));
+
       Assignment assignment = Assignment.builder()
         .assessmentId(assessmentId)
         .studentId(studentId)
         .status("ASSIGNED")
         .build();
-      
+
       Assignment saved = assignmentDao.save(assignment);
       created.add(saved);
     }
