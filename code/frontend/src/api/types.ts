@@ -68,7 +68,7 @@ export interface AssessmentItem {
   questionId: UUID;
   points: number;
   position: number;
-  question: Question;
+  question: Question | UUID;
 }
 
 export interface Assignment {

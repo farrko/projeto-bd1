@@ -59,9 +59,7 @@ public class AssessmentController {
   }
 
   @PatchMapping({ "/{id}/items/reorder", "/{id}/items/reorder/" })
-  public ResponseEntity<List<AssessmentItem>> reorderItems(
-      @PathVariable UUID id,
-      @RequestBody ReorderAssessmentItemsRequest request) {
+  public ResponseEntity<List<AssessmentItem>> reorderItems(@PathVariable UUID id, @RequestBody ReorderAssessmentItemsRequest request) {
     List<AssessmentItem> items = assessmentService.reorderAssessmentItems(id, request.questionIds());
     return ResponseEntity.status(HttpStatus.OK).body(items);
   }
