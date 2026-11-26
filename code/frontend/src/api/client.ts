@@ -1,6 +1,6 @@
 import { ApiError } from "./types"
 
-const API_BASE = 'http://localhost:8080/api';
+const API_BASE = '/api';
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE}${endpoint}`;
