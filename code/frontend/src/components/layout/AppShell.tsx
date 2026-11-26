@@ -25,7 +25,7 @@ export const AppShell = ({ children }: AppShellProps) => {
         <AppSidebar isSideNavExpanded={isSideNavExpanded} onOverlayClick={handleCloseSideNav} />
       </Theme>
 
-      <Content id="main-content" style={{ marginLeft: isSideNavExpanded ? '16rem' : 0, minHeight: 'calc(100vh - 3rem)' }}>
+      <Content id="main-content" style={{ marginLeft: '16rem', minHeight: 'calc(100vh - 3rem)' }}>
         {children}
       </Content>
     </>
