@@ -127,9 +127,7 @@ export const UserModeProvider = ({ children }: { children: ReactNode }) => {
 export const useUserMode = (): UserModeContextValue => {
   const ctx = useContext(UserModeContext);
 
-  if (!ctx) {
-    throw new Error('useUserMode must be used within a UserModeProvider');
-  }
+  if (!ctx) throw new Error('useUserMode must be used within a UserModeProvider');
 
   return ctx;
 }

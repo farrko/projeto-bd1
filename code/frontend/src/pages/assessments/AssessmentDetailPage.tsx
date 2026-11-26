@@ -142,9 +142,7 @@ export const AssessmentDetailPage = () => {
   };
 
   const resolveQuestion = (item: AssessmentItem): Question | undefined => {
-    if (typeof item.question === 'object' && item.question !== null) {
-      return item.question;
-    }
+    if (typeof item.question === 'object' && item.question !== null) return item.question;
 
     return questionMap.get(item.questionId);
   }

@@ -15,15 +15,15 @@ import br.uel.backend.model.Assessment;
 import br.uel.backend.model.ClassEnrollment;
 import br.uel.backend.model.ClassGroup;
 import br.uel.backend.model.user.Student;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ClassGroupService {
-  private ClassGroupDao classGroupDao;
-  private ClassEnrollmentDao classEnrollmentDao;
-  private StudentDao studentDao;
-  private AssessmentDao assessmentDao;
+  private final ClassGroupDao classGroupDao;
+  private final ClassEnrollmentDao classEnrollmentDao;
+  private final StudentDao studentDao;
+  private final AssessmentDao assessmentDao;
 
   public Optional<ClassGroup> getClassGroupById(UUID id) {
     return classGroupDao.findById(id);

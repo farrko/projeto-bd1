@@ -112,9 +112,7 @@ export const ClassGroupFormModal = ({ open, classGroup, onClose, onSuccess }: Cl
             step={1}
             value={year}
             onChange={(_e, data) => {
-              if (typeof data.value === 'number') {
-                setYear(data.value);
-              }
+              if (typeof data.value === 'number') setYear(data.value);
             }}
             disabled={submitting}
           />

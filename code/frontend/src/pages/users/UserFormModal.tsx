@@ -62,9 +62,7 @@ export const UserFormModal = ({ open, role, user, onClose, onSuccess }: UserForm
           if (name.trim() !== user.name) updates.name = name.trim();
           if (email.trim() !== user.email) updates.email = email.trim();
           if (password.trim()) updates.password = password.trim();
-          if (user.role === 'TEACHER' && code.trim() !== user.staffNumber) {
-            updates.staffNumber = code.trim();
-          }
+          if (user.role === 'TEACHER' && code.trim() !== user.staffNumber) updates.staffNumber = code.trim();
 
           await updateTeacher(user.id, updates);
         } else {
@@ -83,9 +81,7 @@ export const UserFormModal = ({ open, role, user, onClose, onSuccess }: UserForm
           if (name.trim() !== user.name) updates.name = name.trim();
           if (email.trim() !== user.email) updates.email = email.trim();
           if (password.trim()) updates.password = password.trim();
-          if (user.role === 'STUDENT' && code.trim() !== user.enrollmentNumber) {
-            updates.enrollmentNumber = code.trim();
-          }
+          if (user.role === 'STUDENT' && code.trim() !== user.enrollmentNumber) updates.enrollmentNumber = code.trim();
 
           await updateStudent(user.id, updates);
         } else {

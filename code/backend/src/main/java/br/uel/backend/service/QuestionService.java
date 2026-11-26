@@ -14,15 +14,15 @@ import br.uel.backend.dto.QuestionDTO;
 import br.uel.backend.model.Alternative;
 import br.uel.backend.model.question.FreeTextQuestion;
 import br.uel.backend.model.question.MultipleChoiceQuestion;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class QuestionService {
-  private MultipleChoiceQuestionDao multipleChoiceQuestionDao;
-  private FreeTextQuestionDao freeTextQuestionDao;
-  private AlternativeDao alternativeDao;
+  private final MultipleChoiceQuestionDao multipleChoiceQuestionDao;
+  private final FreeTextQuestionDao freeTextQuestionDao;
+  private final AlternativeDao alternativeDao;
 
   public Optional<MultipleChoiceQuestion> getMultipleChoiceQuestionById(UUID id) {
     return multipleChoiceQuestionDao.findById(id);
@@ -72,17 +72,13 @@ public class QuestionService {
 
   @Transactional
   public MultipleChoiceQuestion saveMultipleChoiceQuestionWithAlternatives(MultipleChoiceQuestion question, List<Alternative> alternatives) {
-    if (question.getCreatedAt() == null) {
-      question.setCreatedAt(LocalDateTime.now());
-    }
+    if (question.getCreatedAt() == null) question.setCreatedAt(LocalDateTime.now());
     validateMultipleChoiceQuestion(question);
     if (alternatives == null || alternatives.size() < 2) {
       throw new IllegalArgumentException("Multiple choice question must have at least 2 alternatives");
     }
     long correctCount = alternatives.stream().filter(a -> Boolean.TRUE.equals(a.getIsCorrect())).count();
-    if (correctCount != 1) {
-      throw new IllegalArgumentException("Multiple choice question must have exactly 1 correct alternative");
-    }
+    if (correctCount != 1) throw new IllegalArgumentException("Multiple choice question must have exactly 1 correct alternative");
 
     MultipleChoiceQuestion savedQuestion = multipleChoiceQuestionDao.save(question);
     UUID questionId = savedQuestion.getId();
@@ -97,12 +93,8 @@ public class QuestionService {
   }
 
   public FreeTextQuestion saveFreeTextQuestion(FreeTextQuestion question) {
-    if (question.getType() == null) {
-      question.setType("FREE_TEXT");
-    }
-    if (question.getCreatedAt() == null) {
-      question.setCreatedAt(LocalDateTime.now());
-    }
+    if (question.getType() == null) question.setType("FREE_TEXT");
+    if (question.getCreatedAt() == null) question.setCreatedAt(LocalDateTime.now());
     validateFreeTextQuestion(question);
     return freeTextQuestionDao.save(question);
   }
@@ -115,9 +107,7 @@ public class QuestionService {
   @Transactional
   public void changeCorrectAlternative(UUID questionId, String newCorrectLetter) {
     List<Alternative> alternatives = alternativeDao.findAllFromQuestion(questionId);
-    if (alternatives.isEmpty()) {
-      throw new IllegalArgumentException("Question has no alternatives");
-    }
+    if (alternatives.isEmpty()) throw new IllegalArgumentException("Question has no alternatives");
 
     Alternative newCorrect = alternatives.stream()
       .filter(a -> a.getLetter().equals(newCorrectLetter))

@@ -60,9 +60,7 @@ export const PersonaSwitcher = () => {
   }, [mode, selectedTeacher, selectedStudent]);
 
   const handleModeChange = (data: { name?: string | number }) => {
-    if (data.name === 'ALL' || data.name === 'TEACHER' || data.name === 'STUDENT') {
-      setMode(data.name);
-    }
+    if (data.name === 'ALL' || data.name === 'TEACHER' || data.name === 'STUDENT') setMode(data.name);
   }
 
   const handleUserChange = (data: { selectedItem: UserDropdownItem | null }) => {

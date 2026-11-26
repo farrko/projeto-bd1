@@ -15,10 +15,10 @@ import br.uel.backend.model.report.AssessmentAverageReport;
 import br.uel.backend.model.report.MostMissedQuestionReport;
 import br.uel.backend.model.report.ScoreDistributionBand;
 import br.uel.backend.model.report.StudentVsClassAverageReport;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportService {
   private static final LocalDate DEFAULT_START_DATE = LocalDate.of(1900, 1, 1);
   private static final LocalDate DEFAULT_END_DATE = LocalDate.of(9999, 12, 31);
@@ -26,9 +26,9 @@ public class ReportService {
   private static final int DEFAULT_MIN_ANSWERS = 1;
   private static final int DEFAULT_TOP = 10;
 
-  private ReportDao reportDao;
-  private AssessmentDao assessmentDao;
-  private StudentDao studentDao;
+  private final ReportDao reportDao;
+  private final AssessmentDao assessmentDao;
+  private final StudentDao studentDao;
 
   public List<AssessmentAverageReport> getAssessmentAverages(LocalDate startDate, LocalDate endDate, Integer minGraded) {
     LocalDate effectiveStartDate = startDate != null ? startDate : DEFAULT_START_DATE;

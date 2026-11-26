@@ -11,13 +11,13 @@ import br.uel.backend.dto.AnswerCreateRequest;
 import br.uel.backend.dto.AnswerScoreRequest;
 import br.uel.backend.model.Answer;
 import br.uel.backend.service.AnswerService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/assignments/{assessmentId}/{studentId}/answers")
 public class AnswerController {
-  private AnswerService answerService;
+  private final AnswerService answerService;
 
   @PostMapping({ "", "/" })
   public ResponseEntity<Answer> createAnswer(@PathVariable UUID assessmentId, @PathVariable UUID studentId, @RequestBody AnswerCreateRequest request) {

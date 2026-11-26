@@ -14,10 +14,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={ <Navigate to="/users" replace /> } />
         <Route path="/users" element={ <UsersPage /> } />
-        <Route path="/assignments" element={<AssignmentsPage />} />
-        <Route path="/assignments/:assessmentId/:studentId" element={<AssignmentDetailPage />} />
+        <Route path="/assignments" element={ <AssignmentsPage /> } />
+        <Route path="/assignments/:assessmentId/:studentId" element={ <AssignmentDetailPage /> } />
         <Route path="/assessments" element={ <AssessmentsPage /> } />
-        <Route path="/assessments/:id" element={<AssessmentDetailPage />} />
+        <Route path="/assessments/:id" element={ <AssessmentDetailPage /> } />
         <Route path="/questions" element={ <QuestionsPage /> } />
         <Route path="/classes" element={ <ClassesPage /> } />
       </Routes>

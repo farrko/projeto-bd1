@@ -8,12 +8,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.ClassEnrollment;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ClassEnrollmentDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static RowMapper<ClassEnrollment> rowMapper = (rs, rowNum) -> ClassEnrollment.builder()
     .studentId(rs.getObject("student_id", UUID.class))

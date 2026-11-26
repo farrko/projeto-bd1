@@ -23,9 +23,7 @@ public class Assessment {
   }
 
   public void validateTeacherId() {
-    if (teacherId == null) {
-      throw new FieldValidationException("teacherId", "teacherId cannot be null");
-    }
+    if (teacherId == null) throw new FieldValidationException("teacherId", "teacherId cannot be null");
   }
 
   public void validateClassGroupId() {
@@ -33,15 +31,9 @@ public class Assessment {
   }
 
   public void validateTitle() {
-    if (title == null) {
-      throw new FieldValidationException("title", "title cannot be null");
-    }
-    if (title.isBlank()) {
-      throw new FieldValidationException("title", "title cannot be empty");
-    }
-    if (title.length() > 200) {
-      throw new FieldValidationException("title", "title must be at most 200 characters");
-    }
+    if (title == null) throw new FieldValidationException("title", "title cannot be null");
+    if (title.isBlank()) throw new FieldValidationException("title", "title cannot be empty");
+    if (title.length() > 200) throw new FieldValidationException("title", "title must be at most 200 characters");
   }
 
   public void validateDescription() {
@@ -49,20 +41,14 @@ public class Assessment {
   }
 
   public void validateAssessmentDate() {
-    if (assessmentDate == null) {
-      throw new FieldValidationException("assessmentDate", "assessmentDate cannot be null");
-    }
+    if (assessmentDate == null) throw new FieldValidationException("assessmentDate", "assessmentDate cannot be null");
   }
 
   public void validateStartTime() {
-    if (startTime == null) {
-      throw new FieldValidationException("startTime", "startTime cannot be null");
-    }
+    if (startTime == null) throw new FieldValidationException("startTime", "startTime cannot be null");
   }
 
   public void validateEndTime() {
-    if (endTime == null) {
-      throw new FieldValidationException("endTime", "endTime cannot be null");
-    }
+    if (endTime == null) throw new FieldValidationException("endTime", "endTime cannot be null");
   }
 }

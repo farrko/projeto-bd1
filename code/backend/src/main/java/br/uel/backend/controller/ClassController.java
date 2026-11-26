@@ -13,13 +13,13 @@ import br.uel.backend.model.ClassEnrollment;
 import br.uel.backend.model.ClassGroup;
 import br.uel.backend.model.user.Student;
 import br.uel.backend.service.ClassGroupService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/classes")
 public class ClassController {
-  private ClassGroupService classGroupService;
+  private final ClassGroupService classGroupService;
 
   @GetMapping({ "", "/" })
   public ResponseEntity<List<ClassGroup>> all() {

@@ -10,13 +10,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.Assignment;
 import br.uel.backend.model.AssignmentWithScore;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import java.math.BigDecimal;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AssignmentDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static RowMapper<Assignment> rowMapper = (rs, rowNum) -> Assignment.builder()
     .assessmentId(rs.getObject("assessment_id", UUID.class))

@@ -59,16 +59,12 @@ export const QuestionsPage = () => {
   }, [teachers]);
 
   const visibleQuestions = useMemo(() => {
-    if (mode === 'TEACHER' && selectedTeacher) {
-      return questions.filter((q) => q.teacherId === selectedTeacher.id);
-    }
+    if (mode === 'TEACHER' && selectedTeacher) return questions.filter((q) => q.teacherId === selectedTeacher.id);
 
     return questions;
   }, [questions, mode, selectedTeacher]);
 
-  if (mode === 'STUDENT') {
-    return <Navigate to="/assignments" replace />
-  }
+  if (mode === 'STUDENT') return <Navigate to="/assignments" replace />
 
   const handleEdit = (q: AnyQuestion) => {
     if (q.type === 'MULTIPLE_CHOICE') {

@@ -19,13 +19,13 @@ import br.uel.backend.model.report.MostMissedQuestionReport;
 import br.uel.backend.model.report.ScoreDistributionBand;
 import br.uel.backend.model.report.StudentVsClassAverageReport;
 import br.uel.backend.service.ReportService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/reports")
 public class ReportController {
-  private ReportService reportService;
+  private final ReportService reportService;
 
   @GetMapping({ "/assessment-averages", "/assessment-averages/" })
   public ResponseEntity<List<AssessmentAverageReport>> getAssessmentAverages(

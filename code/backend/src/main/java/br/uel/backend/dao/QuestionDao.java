@@ -9,12 +9,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.Question;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class QuestionDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static RowMapper<Question> rowMapper = (rs, rowNum) -> Question.builder()
     .id(rs.getObject("id", UUID.class))

@@ -12,12 +12,12 @@ import br.uel.backend.model.report.AssessmentAverageReport;
 import br.uel.backend.model.report.MostMissedQuestionReport;
 import br.uel.backend.model.report.ScoreDistributionBand;
 import br.uel.backend.model.report.StudentVsClassAverageReport;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static final RowMapper<AssessmentAverageReport> ASSESSMENT_AVERAGE_ROW_MAPPER = (rs, rowNum) ->
     AssessmentAverageReport.builder()

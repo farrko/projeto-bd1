@@ -55,9 +55,7 @@ export const UsersTable = ({ role, users, loading, onAdd, onEdit, onInspect }: U
     return map;
   }, [users]);
 
-  if (loading) {
-    return <DataTableSkeleton headers={headers} rowCount={5} columnCount={4} />
-  }
+  if (loading) return <DataTableSkeleton headers={headers} rowCount={5} columnCount={4} />
 
   return (
     <DataTable rows={rows} headers={headers} isSortable>

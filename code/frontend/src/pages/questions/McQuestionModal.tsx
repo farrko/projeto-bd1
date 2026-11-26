@@ -191,21 +191,13 @@ export const McQuestionModal = ({ open, question, onClose, onSuccess }: McQuesti
     try {
       if (isEdit && question) {
         const updates: Partial<MultipleChoiceQuestion> = {};
-        if (statement.trim() !== question.statement) {
-          updates.statement = statement.trim();
-        }
+        if (statement.trim() !== question.statement) updates.statement = statement.trim();
 
-        if (teacherId !== question.teacherId) {
-          updates.teacherId = teacherId;
-        }
+        if (teacherId !== question.teacherId) updates.teacherId = teacherId;
 
-        if (Object.keys(updates).length > 0) {
-          await updateMcq(question.id, updates);
-        }
+        if (Object.keys(updates).length > 0) await updateMcq(question.id, updates);
 
-        if (correctAlt.letter !== initialCorrectLetter) {
-          await changeCorrectAlternative(question.id, correctAlt.letter);
-        }
+        if (correctAlt.letter !== initialCorrectLetter) await changeCorrectAlternative(question.id, correctAlt.letter);
       } else {
         await createMcqWithAlternatives({
           question: {

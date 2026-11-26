@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import br.uel.backend.model.Assignment;
 import br.uel.backend.model.AssignmentWithScore;
 import br.uel.backend.service.AssignmentService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/assignments")
 public class AssignmentController {
-  private AssignmentService assignmentService;
+  private final AssignmentService assignmentService;
 
   @GetMapping({ "", "/" })
   public ResponseEntity<List<Assignment>> all() {

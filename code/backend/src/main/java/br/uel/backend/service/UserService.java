@@ -8,13 +8,13 @@ import br.uel.backend.dao.user.StudentDao;
 import br.uel.backend.dao.user.TeacherDao;
 import br.uel.backend.model.user.Student;
 import br.uel.backend.model.user.Teacher;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
-  private StudentDao studentDao;
-  private TeacherDao teacherDao;
+  private final StudentDao studentDao;
+  private final TeacherDao teacherDao;
 
   public Optional<Student> getStudentById(UUID id) {
     return studentDao.findById(id);
@@ -25,9 +25,7 @@ public class UserService {
   }
 
   public Student saveStudent(Student student) {
-    if (student.getRole() == null) {
-      student.setRole("STUDENT");
-    }
+    if (student.getRole() == null) student.setRole("STUDENT");
     validateStudent(student);
     return studentDao.save(student);
   }
@@ -41,9 +39,7 @@ public class UserService {
   }
 
   public Teacher saveTeacher(Teacher teacher) {
-    if (teacher.getRole() == null) {
-      teacher.setRole("TEACHER");
-    }
+    if (teacher.getRole() == null) teacher.setRole("TEACHER");
     validateTeacher(teacher);
     return teacherDao.save(teacher);
   }

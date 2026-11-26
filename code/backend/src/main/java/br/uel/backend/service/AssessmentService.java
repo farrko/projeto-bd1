@@ -14,15 +14,15 @@ import br.uel.backend.model.Assessment;
 import br.uel.backend.model.AssessmentItem;
 import br.uel.backend.model.ClassGroup;
 import br.uel.backend.model.user.Teacher;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AssessmentService {
-  private AssessmentDao assessmentDao;
-  private AssessmentItemDao assessmentItemDao;
-  private TeacherDao teacherDao;
-  private ClassGroupDao classGroupDao;
+  private final AssessmentDao assessmentDao;
+  private final AssessmentItemDao assessmentItemDao;
+  private final TeacherDao teacherDao;
+  private final ClassGroupDao classGroupDao;
 
   public Optional<Assessment> getAssessmentById(UUID id) {
     return assessmentDao.findById(id);

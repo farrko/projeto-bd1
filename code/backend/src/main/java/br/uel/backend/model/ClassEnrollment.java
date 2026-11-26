@@ -12,14 +12,10 @@ public class ClassEnrollment {
   private UUID classGroupId;
 
   public void validateStudentId() {
-    if (studentId == null) {
-      throw new FieldValidationException("studentId", "studentId cannot be null");
-    }
+    if (studentId == null) throw new FieldValidationException("studentId", "studentId cannot be null");
   }
 
   public void validateClassGroupId() {
-    if (classGroupId == null) {
-      throw new FieldValidationException("classGroupId", "classGroupId cannot be null");
-    }
+    if (classGroupId == null) throw new FieldValidationException("classGroupId", "classGroupId cannot be null");
   }
 }

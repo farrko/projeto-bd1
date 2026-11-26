@@ -9,12 +9,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import br.uel.backend.model.user.Student;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class StudentDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static RowMapper<Student> rowMapper = (rs, rowNum) -> Student.builder()
     .id(rs.getObject("id", UUID.class))

@@ -10,12 +10,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import br.uel.backend.model.Assessment;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AssessmentDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static RowMapper<Assessment> rowMapper = (rs, rowNum) -> Assessment.builder()
     .id(rs.getObject("id", UUID.class))

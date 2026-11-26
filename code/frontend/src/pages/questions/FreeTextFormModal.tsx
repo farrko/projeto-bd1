@@ -67,17 +67,11 @@ export const FreeTextFormModal = ({ open, question, onClose, onSuccess }: FreeTe
       if (isEdit && question) {
         const updates: Partial<FreeTextQuestion> = {};
 
-        if (statement.trim() !== question.statement) {
-          updates.statement = statement.trim();
-        }
+        if (statement.trim() !== question.statement) updates.statement = statement.trim();
 
-        if (normalizedExpected !== (question.expectedAnswer ?? null)) {
-          updates.expectedAnswer = normalizedExpected;
-        }
+        if (normalizedExpected !== (question.expectedAnswer ?? null)) updates.expectedAnswer = normalizedExpected;
 
-        if (teacherId !== question.teacherId) {
-          updates.teacherId = teacherId;
-        }
+        if (teacherId !== question.teacherId) updates.teacherId = teacherId;
 
         await updateFreeTextQuestion(question.id, updates);
       } else {

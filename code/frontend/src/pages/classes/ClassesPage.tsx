@@ -35,9 +35,7 @@ export const ClassesPage = () => {
     void fetchClassGroups();
   }, [mode, fetchClassGroups]);
 
-  if (mode === 'STUDENT') {
-    return <Navigate to="/assignments" replace />
-  }
+  if (mode === 'STUDENT') return <Navigate to="/assignments" replace />
 
   return (
     <Stack gap={6}>

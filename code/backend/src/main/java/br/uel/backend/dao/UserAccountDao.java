@@ -1,6 +1,6 @@
 package br.uel.backend.dao;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class UserAccountDao {
-  private JdbcTemplate jdbc;
+  private final JdbcTemplate jdbc;
 
   private static RowMapper<UserAccount> rowMapper = (rs, rowNum) -> UserAccount.builder()
     .id(rs.getObject("id", UUID.class))

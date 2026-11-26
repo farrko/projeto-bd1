@@ -12,12 +12,8 @@ public class Student extends UserAccount {
   private String enrollmentNumber;
 
   public void validateEnrollmentNumber() {
-    if (enrollmentNumber == null) {
-      throw new FieldValidationException("enrollmentNumber", "enrollmentNumber cannot be null");
-    }
-    if (enrollmentNumber.isBlank()) {
-      throw new FieldValidationException("enrollmentNumber", "enrollmentNumber cannot be empty");
-    }
+    if (enrollmentNumber == null) throw new FieldValidationException("enrollmentNumber", "enrollmentNumber cannot be null");
+    if (enrollmentNumber.isBlank()) throw new FieldValidationException("enrollmentNumber", "enrollmentNumber cannot be empty");
     if (enrollmentNumber.length() > 20) {
       throw new FieldValidationException("enrollmentNumber", "enrollmentNumber must be at most 20 characters");
     }

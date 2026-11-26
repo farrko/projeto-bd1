@@ -49,9 +49,7 @@ export const ClassGroupsTable = ({ classGroups, loading, onAdd, onEdit, onManage
     return map;
   }, [classGroups]);
 
-  if (loading) {
-    return <DataTableSkeleton headers={HEADERS} rowCount={5} columnCount={4} />
-  }
+  if (loading) return <DataTableSkeleton headers={HEADERS} rowCount={5} columnCount={4} />
 
   return (
     <DataTable rows={rows} headers={HEADERS} isSortable>

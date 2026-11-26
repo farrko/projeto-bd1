@@ -20,32 +20,22 @@ public class Question {
   }
 
   public void validateTeacherId() {
-    if (teacherId == null) {
-      throw new FieldValidationException("teacherId", "teacherId cannot be null");
-    }
+    if (teacherId == null) throw new FieldValidationException("teacherId", "teacherId cannot be null");
   }
 
   public void validateStatement() {
-    if (statement == null) {
-      throw new FieldValidationException("statement", "statement cannot be null");
-    }
-    if (statement.isBlank()) {
-      throw new FieldValidationException("statement", "statement cannot be empty");
-    }
+    if (statement == null) throw new FieldValidationException("statement", "statement cannot be null");
+    if (statement.isBlank()) throw new FieldValidationException("statement", "statement cannot be empty");
   }
 
   public void validateType() {
-    if (type == null) {
-      throw new FieldValidationException("type", "type cannot be null");
-    }
+    if (type == null) throw new FieldValidationException("type", "type cannot be null");
     if (!type.matches("^(MULTIPLE_CHOICE|FREE_TEXT)$")) {
       throw new FieldValidationException("type", "type must be MULTIPLE_CHOICE or FREE_TEXT");
     }
   }
 
   public void validateCreatedAt() {
-    if (createdAt == null) {
-      throw new FieldValidationException("createdAt", "createdAt cannot be null");
-    }
+    if (createdAt == null) throw new FieldValidationException("createdAt", "createdAt cannot be null");
   }
 }

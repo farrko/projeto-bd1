@@ -44,9 +44,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
     Throwable cause = ex.getCause();
-    if (cause instanceof PSQLException psqlEx) {
-      return handlePSQLException(psqlEx);
-    }
+    if (cause instanceof PSQLException psqlEx) return handlePSQLException(psqlEx);
     return ResponseEntity
       .status(HttpStatus.CONFLICT)
       .body(new ErrorResponse(ErrorCodes.DATA_INTEGRITY_VIOLATION, ex.getMostSpecificCause().getMessage()));
@@ -87,9 +85,7 @@ public class GlobalExceptionHandler {
     }
 
     // Trigger exceptions (RAISE EXCEPTION) - typically P0001
-    if ("P0001".equals(sqlState)) {
-      return handleTriggerException(message);
-    }
+    if ("P0001".equals(sqlState)) return handleTriggerException(message);
 
     // Default for other PostgreSQL errors
     return ResponseEntity
@@ -183,12 +179,8 @@ public class GlobalExceptionHandler {
       if (constraint.contains("enrollment_number") || constraint.contains("staff_number") || constraint.contains("email")) {
         return "A record with this value already exists";
       }
-      if (constraint.contains("alternative_one_correct")) {
-        return "There can only be one correct alternative per question";
-      }
-      if (constraint.contains("question_id_type_unique")) {
-        return "Question type mismatch";
-      }
+      if (constraint.contains("alternative_one_correct")) return "There can only be one correct alternative per question";
+      if (constraint.contains("question_id_type_unique")) return "Question type mismatch";
       if (constraint.contains("assessment_item_position_unique")) {
         return "An item with this position already exists in the assessment";
       }
@@ -198,21 +190,11 @@ public class GlobalExceptionHandler {
 
   private String formatForeignKeyViolation(String message, String constraint) {
     if (constraint != null) {
-      if (constraint.contains("assignment_enrollment")) {
-        return "Student is not enrolled in the class group of this assessment";
-      }
-      if (constraint.contains("answer_assignment")) {
-        return "Can only answer an assessment assigned to this student";
-      }
-      if (constraint.contains("answer_assessment_item")) {
-        return "Question does not belong to this assessment";
-      }
-      if (constraint.contains("answer_alternative")) {
-        return "Selected alternative does not belong to this question";
-      }
-      if (constraint.contains("question_teacher")) {
-        return "Referenced teacher does not exist";
-      }
+      if (constraint.contains("assignment_enrollment")) return "Student is not enrolled in the class group of this assessment";
+      if (constraint.contains("answer_assignment")) return "Can only answer an assessment assigned to this student";
+      if (constraint.contains("answer_assessment_item")) return "Question does not belong to this assessment";
+      if (constraint.contains("answer_alternative")) return "Selected alternative does not belong to this question";
+      if (constraint.contains("question_teacher")) return "Referenced teacher does not exist";
       if (constraint.contains("assessment_teacher") || constraint.contains("assessment_class_group")) {
         return "Referenced teacher or class group does not exist";
       }
@@ -222,33 +204,15 @@ public class GlobalExceptionHandler {
 
   private String formatCheckViolation(String message, String constraint) {
     if (constraint != null) {
-      if (constraint.contains("end_time > start_time")) {
-        return "End time must be after start time";
-      }
-      if (constraint.contains("points > 0")) {
-        return "Points must be greater than zero";
-      }
-      if (constraint.contains("position > 0")) {
-        return "Position must be greater than zero";
-      }
-      if (constraint.contains("score >= 0")) {
-        return "Score cannot be negative";
-      }
-      if (constraint.contains("submitted_at >= started_at")) {
-        return "Submitted time must be after started time";
-      }
-      if (constraint.contains("single_kind")) {
-        return "Answer must have either chosen_letter or answer_text, not both";
-      }
-      if (constraint.contains("role")) {
-        return "Invalid role value";
-      }
-      if (constraint.contains("semester")) {
-        return "Semester must be 1 or 2";
-      }
-      if (constraint.contains("year > 0")) {
-        return "Year must be greater than zero";
-      }
+      if (constraint.contains("end_time > start_time")) return "End time must be after start time";
+      if (constraint.contains("points > 0")) return "Points must be greater than zero";
+      if (constraint.contains("position > 0")) return "Position must be greater than zero";
+      if (constraint.contains("score >= 0")) return "Score cannot be negative";
+      if (constraint.contains("submitted_at >= started_at")) return "Submitted time must be after started time";
+      if (constraint.contains("single_kind")) return "Answer must have either chosen_letter or answer_text, not both";
+      if (constraint.contains("role")) return "Invalid role value";
+      if (constraint.contains("semester")) return "Semester must be 1 or 2";
+      if (constraint.contains("year > 0")) return "Year must be greater than zero";
     }
     return "Check constraint violated";
   }

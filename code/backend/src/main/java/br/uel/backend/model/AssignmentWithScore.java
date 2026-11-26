@@ -19,20 +19,14 @@ public class AssignmentWithScore {
   private Integer pendingCount;
 
   public void validateAssessmentId() {
-    if (assessmentId == null) {
-      throw new FieldValidationException("assessmentId", "assessmentId cannot be null");
-    }
+    if (assessmentId == null) throw new FieldValidationException("assessmentId", "assessmentId cannot be null");
   }
 
   public void validateStudentId() {
-    if (studentId == null) {
-      throw new FieldValidationException("studentId", "studentId cannot be null");
-    }
+    if (studentId == null) throw new FieldValidationException("studentId", "studentId cannot be null");
   }
 
   public void validateStatus() {
-    if (status == null) {
-      throw new FieldValidationException("status", "status cannot be null");
-    }
+    if (status == null) throw new FieldValidationException("status", "status cannot be null");
   }
 }

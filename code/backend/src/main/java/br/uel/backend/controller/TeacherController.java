@@ -11,14 +11,14 @@ import br.uel.backend.model.Assessment;
 import br.uel.backend.model.user.Teacher;
 import br.uel.backend.service.AssessmentService;
 import br.uel.backend.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/users/teachers")
 public class TeacherController {
-  private UserService userService;
-  private AssessmentService assessmentService;
+  private final UserService userService;
+  private final AssessmentService assessmentService;
 
   @GetMapping({ "", "/" })
   public ResponseEntity<List<Teacher>> all() {

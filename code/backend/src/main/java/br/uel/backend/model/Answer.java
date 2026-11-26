@@ -17,21 +17,15 @@ public class Answer {
   private BigDecimal score;
 
   public void validateAssessmentId() {
-    if (assessmentId == null) {
-      throw new FieldValidationException("assessmentId", "assessmentId cannot be null");
-    }
+    if (assessmentId == null) throw new FieldValidationException("assessmentId", "assessmentId cannot be null");
   }
 
   public void validateStudentId() {
-    if (studentId == null) {
-      throw new FieldValidationException("studentId", "studentId cannot be null");
-    }
+    if (studentId == null) throw new FieldValidationException("studentId", "studentId cannot be null");
   }
 
   public void validateQuestionId() {
-    if (questionId == null) {
-      throw new FieldValidationException("questionId", "questionId cannot be null");
-    }
+    if (questionId == null) throw new FieldValidationException("questionId", "questionId cannot be null");
   }
 
   public void validateChosenLetter() {

@@ -14,16 +14,16 @@ import br.uel.backend.model.Answer;
 import br.uel.backend.model.Assessment;
 import br.uel.backend.model.Question;
 import br.uel.backend.model.user.Student;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import java.math.BigDecimal;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AnswerService {
-  private AnswerDao answerDao;
-  private AssessmentDao assessmentDao;
-  private StudentDao studentDao;
-  private QuestionDao questionDao;
+  private final AnswerDao answerDao;
+  private final AssessmentDao assessmentDao;
+  private final StudentDao studentDao;
+  private final QuestionDao questionDao;
 
   public Optional<Answer> getAnswerById(UUID assessmentId, UUID studentId, UUID questionId) {
     return answerDao.findById(assessmentId, studentId, questionId);
@@ -72,9 +72,7 @@ public class AnswerService {
   public Answer updateScore(UUID assessmentId, UUID studentId, UUID questionId, BigDecimal score) {
     Optional<Answer> existing = answerDao.findById(assessmentId, studentId, questionId);
 
-    if (existing.isEmpty()) {
-      throw new IllegalArgumentException("Answer not found");
-    }
+    if (existing.isEmpty()) throw new IllegalArgumentException("Answer not found");
 
     Answer answer = existing.get();
     answer.setScore(score);

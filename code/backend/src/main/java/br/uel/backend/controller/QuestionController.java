@@ -13,13 +13,13 @@ import br.uel.backend.model.Alternative;
 import br.uel.backend.model.question.FreeTextQuestion;
 import br.uel.backend.model.question.MultipleChoiceQuestion;
 import br.uel.backend.service.QuestionService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import java.util.Map;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class QuestionController {
-  private QuestionService questionService;
+  private final QuestionService questionService;
 
   // Base endpoint for all questions
   @GetMapping({ "/api/questions", "/api/questions/" })
@@ -128,14 +128,12 @@ public class QuestionController {
   @PatchMapping({ "/api/questions/mc/{mcqId}/correct-alternative", "/api/questions/mc/{mcqId}/correct-alternative/" })
   public ResponseEntity<Void> changeCorrectAlternative(@PathVariable UUID mcqId, @RequestBody Map<String, String> request) {
     String newCorrectLetter = request.get("letter");
-    if (newCorrectLetter == null || newCorrectLetter.isBlank()) {
-      return ResponseEntity.badRequest().build();
-    }
+    if (newCorrectLetter == null || newCorrectLetter.isBlank()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
     Optional<MultipleChoiceQuestion> question = questionService.getMultipleChoiceQuestionById(mcqId);
     if (question.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     questionService.changeCorrectAlternative(mcqId, newCorrectLetter.toUpperCase());
-    return ResponseEntity.ok().build();
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

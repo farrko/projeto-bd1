@@ -11,13 +11,13 @@ import br.uel.backend.dto.ReorderAssessmentItemsRequest;
 import br.uel.backend.model.Assessment;
 import br.uel.backend.model.AssessmentItem;
 import br.uel.backend.service.AssessmentService;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/assessments")
 public class AssessmentController {
-  private AssessmentService assessmentService;
+  private final AssessmentService assessmentService;
 
   @GetMapping({ "", "/" })
   public ResponseEntity<List<Assessment>> all() {

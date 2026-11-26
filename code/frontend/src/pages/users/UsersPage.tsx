@@ -15,9 +15,7 @@ export const UsersPage = () => {
   const [formState, setFormState] = useState<{ open: boolean; role: Role; user: UserRecord | null; }>({ open: false, role: 'TEACHER', user: null });
   const [inspectedUser, setInspectedUser] = useState<UserRecord | null>(null);
 
-  if (mode !== 'ALL') {
-    return <Navigate to="/assignments" replace />
-  }
+  if (mode !== 'ALL') return <Navigate to="/assignments" replace />
 
   const openCreateModal = (role: Role) => {
     setFormState({ open: true, role, user: null });
