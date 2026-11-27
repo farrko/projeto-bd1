@@ -7,6 +7,7 @@ import { AssessmentsPage } from './pages/assessments/AssessmentsPage'
 import { AssessmentDetailPage } from './pages/assessments/AssessmentDetailPage'
 import { AssignmentsPage } from './pages/assignments/AssignmentsPage'
 import { AssignmentDetailPage } from './pages/assignments/AssignmentDetailPage'
+import { ReportsPage } from './pages/reports/ReportsPage'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/assessments/:id" element={ <AssessmentDetailPage /> } />
         <Route path="/questions" element={ <QuestionsPage /> } />
         <Route path="/classes" element={ <ClassesPage /> } />
+        <Route path="/reports" element={<ReportsPage />} />
       </Routes>
     </AppShell>
   )

@@ -1,7 +1,7 @@
 import { useMemo, type ComponentType } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { SideNav, SideNavItems, SideNavLink, SideNavDivider } from '@carbon/react'
-import { UserMultiple, Education, Catalog, DocumentTasks, TaskComplete } from '@carbon/icons-react'
+import { UserMultiple, Education, Catalog, DocumentTasks, TaskComplete, ChartBar } from '@carbon/icons-react'
 import { useUserMode, type ViewMode } from '../../context/UserModeContext'
 
 interface NavItemConfig {
@@ -36,6 +36,13 @@ const NAV_ITEMS: NavItemConfig[] = [
     label: 'Class Groups',
     icon: Education,
     allowedModes: ['ALL', 'TEACHER'],
+  },
+  {
+    path: '/reports',
+    label: 'Reports',
+    icon: ChartBar,
+    allowedModes: ['ALL', 'TEACHER', 'STUDENT'],
+    dividerBefore: true,
   },
   {
     path: '/users',
